@@ -14,8 +14,6 @@ class StructureClass:
 
     def move(self):
         movementSpeed = 5
-        xMovement = 0
-        yMovement = 0
         wMovement = 0
         aMovement = 0
         sMovement = 0
@@ -49,9 +47,6 @@ class StructureClass:
         if keyPressed[pygame.K_s] and keyPressed[pygame.K_d]:
             sMovement = -math.sin(45) * movementSpeed
             dMovement = -math.sin(45) * movementSpeed
-
-        print(yMovement)
-        print(xMovement)
 
         self.xPos += aMovement + dMovement
         self.yPos += wMovement + sMovement
