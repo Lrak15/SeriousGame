@@ -20,7 +20,11 @@ pygame.display.set_caption('placeholder title')
 
 # tiangna dnnasdnas das nasdn asdn nasdn wannds adnwandn nwan n d'
 structure = StructureClass(5, gameWindow)
-hitbox1 = HitboxClass(1, gameWindow)
+graveyardHitbox1 = HitboxClass(1, gameWindow, 100, 100, 50, 50)
+graveyardHitbox2 = HitboxClass(1, gameWindow, 200, 200, 50, 50)
+graveyardHitbox3 = HitboxClass(1, gameWindow, 300, 300, 50, 50)
+
+graveyardHitboxes = [graveyardHitbox1, graveyardHitbox2, graveyardHitbox3]
 
 # Load images
 graveyard = pygame.image.load('Graphics/graveyard.png')
@@ -33,7 +37,9 @@ xMoved = 0
 yMoved = 0
 movementSpeed = 2
 
-
+def draw_graveyardHitboxes():
+    for i in range (graveyardHitboxes):
+        gameWindow.blit(i)
 
 
 Running = True
@@ -90,6 +96,7 @@ while Running:
 
     structure.move(wMoved, aMoved, sMoved, dMoved)
     structure.draw(graveyard)
+    draw_graveyardHitboxes()
 
     pygame.draw.rect(gameWindow, ('red'), pygame.Rect(800, 450, 10, 10))
 
