@@ -15,7 +15,7 @@ class HitboxClass:
         self.xPos += aMoved + dMoved
         self.yPos += wMoved + sMoved
 
-    def draw_structure(self, graveyard):
+    def draw(self, graveyard):
         self.gameWindow.blit(graveyard, (self.xPos, self.yPos))
 
 

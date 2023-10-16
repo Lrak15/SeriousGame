@@ -1,6 +1,7 @@
 
 # Import libraries
 from Structure import StructureClass
+from Hitboxes import HitboxClass
 import math
 import pygame
 pygame.init()
@@ -19,12 +20,14 @@ pygame.display.set_caption('placeholder title')
 
 # tiangna dnnasdnas das nasdn asdn nasdn wannds adnwandn nwan n d'
 structure = StructureClass(5, gameWindow)
-
+hitbox1 = HitboxClass(1, gameWindow)
 
 # Load images
 graveyard = pygame.image.load('Graphics/graveyard.png')
 graveyard = pygame.transform.scale(graveyard, (500, 500))
 graveyardRect = graveyard.get_rect()
+
+redHitbox = pygame.Rect(200, 200, 500, 500)
 
 xMoved = 0
 yMoved = 0
@@ -91,6 +94,9 @@ while Running:
     pygame.draw.rect(gameWindow, ('red'), pygame.Rect(800, 450, 10, 10))
 
     # gameWindow.blit(graveyard, (structure.xPos, structure.yPos))
+
+
+    pygame.draw.rect(gameWindow, ('red'), redHitbox, 10)
 
 
 
