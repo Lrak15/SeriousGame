@@ -1,7 +1,6 @@
 
 # Import libraries
 from Structure import StructureClass
-from Hitboxes import
 import math
 import pygame
 pygame.init()
