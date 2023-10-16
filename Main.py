@@ -19,7 +19,7 @@ pygame.display.set_caption('placeholder title')
 
 # tiangna dnnasdnas das nasdn asdn nasdn wannds adnwandn nwan n d'
 structure = StructureClass(5, gameWindow)
-hitbox =
+
 
 # Load images
 graveyard = pygame.image.load('Graphics/graveyard.png')
