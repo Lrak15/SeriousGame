@@ -5,7 +5,7 @@
 
 from GameObjects import GameObject
 from  GameObjects import Structure
-from  GameObjects import Hitbox
+from  GameObjects import HitBox
 import math
 
 import pygame
@@ -59,7 +59,7 @@ while Running:
     gameWindow.fill('blue')
 
     movementSpeed = 2
-    GameObject.calculate_movement(movementSpeed, 1234567891011121314151617181920212223242526272830313233)
+    GameObject.calculate_movement(movementSpeed)
 
     Structure.move()
     Structure.draw()

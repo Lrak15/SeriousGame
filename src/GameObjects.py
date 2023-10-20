@@ -1,97 +1,72 @@
 import math
 import pygame
-# ????????????????
+
 
 class GameObject:
-    def __init__(self, gameWindow):
-        self.gameWindow = gameWindow
-        self.xPos = 0
-        self.yPos = 0
-        self.width = 50
-        self.height = 50
+    def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height):
+        self.gameWindow = game_window
+        self.wMoved = 69
+        self.aMoved = 69
+        self.sMoved = 69
+        self.dMoved = 69
+        self.keyPressed = pygame.key.get_pressed()
+        self.xPos = x_pos
+        self.yPos = y_pos
+        self.width = cool_variable_width
+        self.height = cool_variable_height
+
+    def calculate_movement(self, movement_speed):
         self.wMoved = 0
         self.aMoved = 0
         self.sMoved = 0
         self.dMoved = 0
 
-    def calculate_movement(self, movementSpeed):
-        wMoved = 0
-        aMoved = 0
-        sMoved = 0
-        dMoved = 0
+        if self.keyPressed[pygame.K_w]:
+            self.wMoved = movement_speed
 
-        keyPressed = pygame.key.get_pressed()
+        if self.keyPressed[pygame.K_a]:
+            self.aMoved = movement_speed
 
-        if keyPressed[pygame.K_w]:
-            wMoved = movementSpeed
+        if self.keyPressed[pygame.K_s]:
+            self.sMoved = -movement_speed
 
-        if keyPressed[pygame.K_a]:
-            aMoved = movementSpeed
+        if self.keyPressed[pygame.K_d]:
+            self.dMoved = -movement_speed
 
-        if keyPressed[pygame.K_s]:
-            sMoved = -movementSpeed
+        if self.wMoved and self.aMoved != 0:
+            self.wMoved = math.sin(45) * movement_speed
+            self.aMoved = math.sin(45) * movement_speed
 
-        if keyPressed[pygame.K_d]:
-            dMoved = -movementSpeed
+        if self.wMoved and self.dMoved != 0:
+            self.wMoved = math.sin(45) * movement_speed
+            self.dMoved = -math.sin(45) * movement_speed
 
-        if wMoved and aMoved != 0:
-            wMoved = math.sin(45) * movementSpeed
-            aMoved = math.sin(45) * movementSpeed
+        if self.sMoved and self.aMoved != 0:
+            self.sMoved = -math.sin(45) * movement_speed
+            self.aMoved = math.sin(45) * movement_speed
 
-        if wMoved and dMoved != 0:
-            wMoved = math.sin(45) * movementSpeed
-            dMoved = -math.sin(45) * movementSpeed
+        if self.sMoved and self.dMoved != 0:
+            self.sMoved = -math.sin(45) * movement_speed
+            self.dMoved = -math.sin(45) * movement_speed
 
-        if sMoved and aMoved != 0:
-            sMoved = -math.sin(45) * movementSpeed
-            aMoved = math.sin(45) * movementSpeed
-
-        if sMoved and dMoved != 0:
-            sMoved = -math.sin(45) * movementSpeed
-            dMoved = -math.sin(45) * movementSpeed
+    def move(self):
+        self.xPos += self.aMoved + self.dMoved
+        self.yPos += self.wMoved + self.sMoved
 
 
 class Structure(GameObject):
-    def __init__(self, gameWindow, xPos, yPos, width, height):
-        super().__init__(gameWindow)
-        self.joe = 0
+    def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height, cool_image):
+        super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
+        self.graphics = cool_image
 
-    def move(self, wMoved, aMoved, sMoved, dMoved):
-        self.xPos += aMoved + dMoved
-        self.yPos += wMoved + sMoved
-
-    def draw(self, graveyard):
-        self.gameWindow.blit(graveyard, (self.xPos, self.yPos))
+    def draw(self):
+        self.gameWindow.blit(self.graphics, (self.xPos, self.yPos))
 
 
+class HitBox(GameObject):
+    def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height, cool_variable_color):
+        super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
+        self.color = cool_variable_color
 
-
-class Hitbox(GameObject):
-    def __init__(self, assetNumber, gameWindow, xPos, yPos, width, height):
-        super().__init__()
-        self.name = assetNumber
-        self.gameWindow = gameWindow
-        self.xPos = 0
-        self.yPos = 0
-        self.width = 50
-        self.height = 50
-
-    def move(self, wMoved, aMoved, sMoved, dMoved):
-        self.xPos += aMoved + dMoved
-        self.yPos += wMoved + sMoved
-
-    def draw(self, graveyard):
-        self.gameWindow.blit(graveyard, (self.xPos, self.yPos))
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def draw(self):
+        pygame.draw.rect(self.gameWindow, self.color, pygame.Rect(self.xPos, self.yPos, self.width, self.height), 10)
