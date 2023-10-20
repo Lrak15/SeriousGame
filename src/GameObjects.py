@@ -9,28 +9,29 @@ class GameObject:
         self.aMoved = 69
         self.sMoved = 69
         self.dMoved = 69
-        self.keyPressed = pygame.key.get_pressed()
+        # self.keyPressed = pygame.key.get_pressed()
         self.xPos = x_pos
         self.yPos = y_pos
         self.width = cool_variable_width
         self.height = cool_variable_height
 
-    def calculate_movement(self, movement_speed):
+    def move(self, movement_speed):
         self.wMoved = 0
         self.aMoved = 0
         self.sMoved = 0
         self.dMoved = 0
+        key_pressed = pygame.key.get_pressed()
 
-        if self.keyPressed[pygame.K_w]:
+        if key_pressed[pygame.K_w]:
             self.wMoved = movement_speed
 
-        if self.keyPressed[pygame.K_a]:
+        if key_pressed[pygame.K_a]:
             self.aMoved = movement_speed
 
-        if self.keyPressed[pygame.K_s]:
+        if key_pressed[pygame.K_s]:
             self.sMoved = -movement_speed
 
-        if self.keyPressed[pygame.K_d]:
+        if key_pressed[pygame.K_d]:
             self.dMoved = -movement_speed
 
         if self.wMoved and self.aMoved != 0:
@@ -49,7 +50,6 @@ class GameObject:
             self.sMoved = -math.sin(45) * movement_speed
             self.dMoved = -math.sin(45) * movement_speed
 
-    def move(self):
         self.xPos += self.aMoved + self.dMoved
         self.yPos += self.wMoved + self.sMoved
 
@@ -58,15 +58,20 @@ class Structure(GameObject):
     def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height, cool_image):
         super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
         self.graphics = cool_image
+        self.hey = 69
+        # width and height needed?
 
     def draw(self):
         self.gameWindow.blit(self.graphics, (self.xPos, self.yPos))
 
 
 class HitBox(GameObject):
-    def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height, cool_variable_color):
+    def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height,cool_variable_color,
+                 cool_border_thickness_variable):
         super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
         self.color = cool_variable_color
+        self.thickness = cool_border_thickness_variable
 
     def draw(self):
-        pygame.draw.rect(self.gameWindow, self.color, pygame.Rect(self.xPos, self.yPos, self.width, self.height), 10)
+        pygame.draw.rect(self.gameWindow, self.color, pygame.Rect(self.xPos, self.yPos, self.width, self.height),
+                         self.thickness)
