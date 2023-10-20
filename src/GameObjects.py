@@ -34,6 +34,10 @@ class GameObject:
         if key_pressed[pygame.K_d]:
             self.dMoved = -movement_speed
 
+        # The following code checks if a movement in the vertical direction and a movement in the horizontal direction
+        # both aren't equal to 0, meaning that there is diagonal movement. If so, both movement directions, making up
+        # the diagonal movement, is shortened, so that the diagonal movement speed is the same speed as vertical or
+        # horizontal movement
         if self.wMoved and self.aMoved != 0:
             self.wMoved = math.sin(45) * movement_speed
             self.aMoved = math.sin(45) * movement_speed
@@ -50,6 +54,7 @@ class GameObject:
             self.sMoved = -math.sin(45) * movement_speed
             self.dMoved = -math.sin(45) * movement_speed
 
+        # Movement in all directions is added up
         self.xPos += self.aMoved + self.dMoved
         self.yPos += self.wMoved + self.sMoved
 
@@ -66,7 +71,7 @@ class Structure(GameObject):
 
 
 class HitBox(GameObject):
-    def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height,cool_variable_color,
+    def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height, cool_variable_color,
                  cool_border_thickness_variable):
         super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
         self.color = cool_variable_color
