@@ -80,3 +80,34 @@ class HitBox(GameObject):
     def draw(self):
         pygame.draw.rect(self.gameWindow, self.color, pygame.Rect(self.xPos, self.yPos, self.width, self.height),
                          self.thickness)
+
+# class Player('???'):
+class Player():
+    def __init__(self):
+        pass
+
+    def draw(self):
+        pass
+        # blit.shoes
+        # blit.shirt
+        # blit.pants
+        # blit.face and hands
+        # blit.hair
+        # blit.overShirt
+        # blit.hat?
+
+
+class Projectile(GameObject):
+    def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height, projectile_damage,
+                 projectile_speed, mouse_x, mouse_y):
+        super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
+        self.damage = projectile_damage
+        self.speed = projectile_speed
+        self.angle = math.atan((mouse_x - self.xPos)/(mouse_y - self.yPos))
+
+    def travel(self):
+        self.xPos += math.cos(self.angle) * self.speed
+        self.yPos += math.sin(self.angle) * self.speed
+
+    def draw(self):
+        pygame.draw.circle(self.gameWindow, 'white', (self.xPos, self.yPos), 10)

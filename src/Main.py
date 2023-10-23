@@ -3,6 +3,8 @@
 from GameObjects import GameObject
 from GameObjects import Structure
 from GameObjects import HitBox
+from GameObjects import Player
+from GameObjects import Projectile
 import pygame
 pygame.init()
 
@@ -14,6 +16,21 @@ timer = pygame.time.Clock()
 screenWidth, screenHeight = pygame.display.Info().current_w, pygame.display.Info().current_h
 gameWindow = pygame.display.set_mode([screenWidth, screenHeight])
 pygame.display.set_caption('placeholder title')
+
+# Define center coordinates
+centerX, centerY = screenWidth / 2, screenHeight / 2
+print(screenWidth)
+print(centerX)
+print(screenHeight)
+print(centerY)
+
+tingeling1, tingeling2 = screenWidth / 16, screenHeight / 9
+tingeling3 = tingeling1 / tingeling2
+if tingeling3 == 1:
+    print('Your screen is in 16/9 format :)')
+else:
+    print('!!!Your screen is NOT in 16/9 format!!!')
+    # Can i make this text display in red instead ?????????????????????????????????????????????????????????????????????????????????
 
 # Define pixel size
 px = round(screenHeight / 200)
@@ -33,11 +50,44 @@ graveyardHitBox2 = HitBox(gameWindow, 200, 200, 90, 90, 'red', px)
 graveyardHitBox3 = HitBox(gameWindow, 300, 300, 70, 70, 'red', px)
 graveyardHitBox4 = HitBox(gameWindow, 400, 400, 40, 40, 'red', px)
 
+graveyardHitBoxes = [graveyardHitBox1, graveyardHitBox2, graveyardHitBox3, graveyardHitBox4]
 
+projectiles = []
+
+Customise = True
 Running = True
+
+
+while Customise:
+    timer.tick(fps)
+
+    gameWindow.fill('white')
+
+    # Check for pygame events
+    for event in pygame.event.get():
+
+        # Check for keys pressed
+        if event.type == pygame.KEYDOWN:
+
+            # Close game if escape key is pressed
+            if event.key == pygame.K_ESCAPE:
+                Customise = False
+                Running = False
+
+            elif event.key == pygame.K_SPACE:
+                Customise = False
+
+        # Close game if the game windows close button is pressed
+        elif event.type == pygame.QUIT:
+            Customise = False
+            Running = False
 
 while Running:
     timer.tick(fps)
+
+    movementSpeed = 2
+    projectileSpeed = 15
+    mousePosition = pygame.mouse.get_pos()
 
     gameWindow.fill('blue')
 
@@ -51,26 +101,29 @@ while Running:
             if event.key == pygame.K_ESCAPE:
                 Running = False
 
+            if event.key == pygame.K_0:
+                shot = Projectile(gameWindow, centerX, centerY, 69, 69, 420, projectileSpeed, mousePosition[0],
+                                  mousePosition[1])
+                print(shot.angle)
+                projectiles = [shot]
+
         # Close game if the game windows close button is pressed
         elif event.type == pygame.QUIT:
             Running = False
 
-    mousePosition = pygame.mouse.get_pos()
-    pygame.draw.rect(gameWindow, 'purple', pygame.Rect(mousePosition[0], mousePosition[1], 10 * px, 10 * px), 3 * px)
+    reticle = pygame.draw.rect(gameWindow, 'purple', pygame.Rect(mousePosition[0], mousePosition[1], 10 * px, 10 * px), 3 * px)
 
-    movementSpeed = 2
     graveyardStructureTing.move(movementSpeed)
     graveyardStructureTing.draw()
 
-    graveyardHitBox1.move(movementSpeed)
-    graveyardHitBox2.move(movementSpeed)
-    graveyardHitBox3.move(movementSpeed)
-    graveyardHitBox4.move(movementSpeed)
+    for i in graveyardHitBoxes:
+        i.move(movementSpeed)
+        i.draw()
 
-    graveyardHitBox1.draw()
-    graveyardHitBox2.draw()
-    graveyardHitBox3.draw()
-    graveyardHitBox4.draw()
+    for i in projectiles:
+        i.move(movementSpeed)
+        i.travel()
+        i.draw()
 
     # Update game window
     pygame.display.flip()
