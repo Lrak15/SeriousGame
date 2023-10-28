@@ -103,11 +103,49 @@ class Projectile(GameObject):
         super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
         self.damage = projectile_damage
         self.speed = projectile_speed
-        self.angle = math.atan((mouse_x - self.xPos)/(mouse_y - self.yPos))
+        self.mouseX = mouse_x
+        self.mouseY = mouse_y
+        self.angle = math.atan((self.mouseY - self.yPos)/(self.mouseX - self.xPos))
+        # self.xDirectionzzz = self.xPos + math.cos(self.angle) * self.speed
+        # self.yDirectionzzz = self.yPos + math.sin(self.angle) * self.speed
 
-    def travel(self):
-        self.xPos += math.cos(self.angle) * self.speed
-        self.yPos += math.sin(self.angle) * self.speed
+    def travel(self, center_x):
+        if self.mouseX < center_x:
+            self.xPos -= math.cos(self.angle) * self.speed
+            self.yPos += math.sin(self.angle) * self.speed
+        elif self.mouseX > center_x:
+            self.xPos += math.cos(self.angle) * self.speed
+            self.yPos -= math.sin(self.angle) * self.speed
 
     def draw(self):
-        pygame.draw.circle(self.gameWindow, 'white', (self.xPos, self.yPos), 10)
+        pygame.draw.circle(self.gameWindow, 'yellow', (self.xPos, self.yPos), 10)
+        pygame.draw.circle(self.gameWindow, 'white', (-10, 400), 10)
+        pygame.draw.circle(self.gameWindow, 'white', (-9, 390), 10)
+        pygame.draw.circle(self.gameWindow, 'white', (-8, 380), 10)
+        pygame.draw.circle(self.gameWindow, 'white', (-7, 370), 10)
+        pygame.draw.circle(self.gameWindow, 'white', (-6, 360), 10)
+        pygame.draw.circle(self.gameWindow, 'white', (-5, 350), 10)
+        pygame.draw.circle(self.gameWindow, 'white', (-4, 340), 10)
+        pygame.draw.circle(self.gameWindow, 'white', (-3, 330), 10)
+        pygame.draw.circle(self.gameWindow, 'white', (-2, 320), 10)
+        pygame.draw.circle(self.gameWindow, 'white', (-1, 310), 10)
+        pygame.draw.circle(self.gameWindow, 'white', (0, 300), 10)
+
+'''
+class test:
+    def __init__(self):
+        self._hitboxes = []
+
+    def add_hitbox(self, hitbox: HitBox):
+        self._hitboxes.append(hitbox)
+
+    def move(self, x, y):
+        # move structure
+        for hitbox in self._hitboxes:
+            hitbox.move(x, y)
+
+thing = test()
+test.add_hitbox(HitBox(gameWindow, 100, 100, 100, 100, 'red', px)
+
+thing.move(2, 4);
+'''

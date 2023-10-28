@@ -44,7 +44,6 @@ calculatorForGameobjects = GameObject(gameWindow, 69, 69, 69, 69)
 
 graveyardStructureTing = Structure(gameWindow, 100, 100, 69, 69, graveyard)
 
-
 graveyardHitBox1 = HitBox(gameWindow, 100, 100, 100, 100, 'red', px)
 graveyardHitBox2 = HitBox(gameWindow, 200, 200, 90, 90, 'red', px)
 graveyardHitBox3 = HitBox(gameWindow, 300, 300, 70, 70, 'red', px)
@@ -86,7 +85,7 @@ while Running:
     timer.tick(fps)
 
     movementSpeed = 2
-    projectileSpeed = 15
+    projectileSpeed = 1
     mousePosition = pygame.mouse.get_pos()
 
     gameWindow.fill('blue')
@@ -103,9 +102,13 @@ while Running:
 
             if event.key == pygame.K_0:
                 shot = Projectile(gameWindow, centerX, centerY, 69, 69, 420, projectileSpeed, mousePosition[0],
-                                  mousePosition[1])
-                print(shot.angle)
-                projectiles = [shot]
+                                  (screenHeight - mousePosition[1]))
+
+                print(f'mouseX({mousePosition[0]}) - centerX({centerX}) = {mousePosition[0] - centerX}')
+                print(f'mouseY({screenHeight - mousePosition[1]}) - centerY({centerY}) = {(screenHeight - mousePosition[1]) - centerY}')
+                print(f'angle between these is arctan({(screenHeight - mousePosition[1]) - centerY} / {mousePosition[0] - centerX}) = {shot.angle}')
+                # print(f'x-direction = {shot.xDirectionzzz} and y-direction = {shot.yDirectionzzz}')
+                projectiles.append(shot)
 
         # Close game if the game windows close button is pressed
         elif event.type == pygame.QUIT:
@@ -121,8 +124,10 @@ while Running:
         i.draw()
 
     for i in projectiles:
+        if i.xPos < 0 or i.xPos > screenWidth or i.yPos < 0 or i.yPos > screenHeight:
+            projectiles.remove(i)
         i.move(movementSpeed)
-        i.travel()
+        i.travel(centerX)
         i.draw()
 
     # Update game window
