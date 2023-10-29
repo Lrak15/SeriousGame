@@ -119,17 +119,8 @@ class Projectile(GameObject):
 
     def draw(self):
         pygame.draw.circle(self.gameWindow, 'yellow', (self.xPos, self.yPos), 10)
-        pygame.draw.circle(self.gameWindow, 'white', (-10, 400), 10)
-        pygame.draw.circle(self.gameWindow, 'white', (-9, 390), 10)
-        pygame.draw.circle(self.gameWindow, 'white', (-8, 380), 10)
-        pygame.draw.circle(self.gameWindow, 'white', (-7, 370), 10)
-        pygame.draw.circle(self.gameWindow, 'white', (-6, 360), 10)
-        pygame.draw.circle(self.gameWindow, 'white', (-5, 350), 10)
-        pygame.draw.circle(self.gameWindow, 'white', (-4, 340), 10)
-        pygame.draw.circle(self.gameWindow, 'white', (-3, 330), 10)
-        pygame.draw.circle(self.gameWindow, 'white', (-2, 320), 10)
         pygame.draw.circle(self.gameWindow, 'white', (-1, 310), 10)
-        pygame.draw.circle(self.gameWindow, 'white', (0, 300), 10)
+        #pygame.draw.circle(self.gameWindow, 'white', (0, 300), 10)
 
 '''
 class test:

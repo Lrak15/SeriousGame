@@ -85,7 +85,7 @@ while Running:
     timer.tick(fps)
 
     movementSpeed = 2
-    projectileSpeed = 1
+    projectileSpeed = 10
     mousePosition = pygame.mouse.get_pos()
 
     gameWindow.fill('blue')
