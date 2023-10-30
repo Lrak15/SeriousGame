@@ -40,6 +40,9 @@ graveyard = pygame.image.load('../Graphics/graveyard.png')
 graveyard = pygame.transform.scale(graveyard, (100 * px, 100 * px))
 graveyardRect = graveyard.get_rect()
 
+# Load font
+font = pygame.font.Font('freesansbold.ttf', 20)
+
 calculatorForGameobjects = GameObject(gameWindow, 69, 69, 69, 69)
 
 graveyardStructureTing = Structure(gameWindow, 100, 100, 69, 69, graveyard)
@@ -52,6 +55,12 @@ graveyardHitBox4 = HitBox(gameWindow, 400, 400, 40, 40, 'red', px)
 graveyardHitBoxes = [graveyardHitBox1, graveyardHitBox2, graveyardHitBox3, graveyardHitBox4]
 
 projectiles = []
+
+
+def display_mouse_coordinates():
+    mouse_coordinates = font.render(f'coordinates: {mousePosition[0]} ; {mousePosition[1]}', True, 'red')
+    gameWindow.blit(mouse_coordinates, (mousePosition[0], mousePosition[1]))
+
 
 Customise = True
 Running = True
@@ -130,6 +139,8 @@ while Running:
         i.move(movementSpeed)
         i.travel(centerX)
         i.draw()
+
+    display_mouse_coordinates()
 
     # Update game window
     pygame.display.flip()
