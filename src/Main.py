@@ -4,6 +4,7 @@ from GameObjects import GameObject
 from GameObjects import Structure
 from GameObjects import HitBox
 from GameObjects import Player
+from GameObjects import Enemy
 from GameObjects import Projectile
 import pygame
 pygame.init()
@@ -36,7 +37,7 @@ else:
 px = round(screenHeight / 200)
 
 # Load images
-graveyard = pygame.image.load('../Graphics/graveyard.png')
+graveyard = pygame.image.load('Graphics/graveyard.png')
 graveyard = pygame.transform.scale(graveyard, (100 * px, 100 * px))
 graveyardRect = graveyard.get_rect()
 
@@ -55,7 +56,10 @@ graveyardHitBox4 = HitBox(gameWindow, 400, 400, 40, 40, 'red', px)
 graveyardHitBoxes = [graveyardHitBox1, graveyardHitBox2, graveyardHitBox3, graveyardHitBox4]
 
 projectiles = []
+enemies = []
 
+spawn_x = 0
+spawn_y = 0
 
 def display_mouse_coordinates():
     mouse_coordinates = font.render(f'coordinates: {mousePosition[0]} ; {mousePosition[1]}', True, 'red')
@@ -69,7 +73,7 @@ Running = True
 while Customise:
     timer.tick(fps)
 
-    gameWindow.fill('white')
+    gameWindow.fill('red')
 
     # Check for pygame events
     for event in pygame.event.get():
@@ -90,11 +94,15 @@ while Customise:
             Customise = False
             Running = False
 
+    # Update game window
+    pygame.display.flip()
+
 while Running:
     timer.tick(fps)
 
     movementSpeed = 2
     projectileSpeed = 10
+    enemySpeed = 5
     # make projectilespeed inside clasSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
     mousePosition = pygame.mouse.get_pos()
 
@@ -120,6 +128,11 @@ while Running:
                 # print(f'x-direction = {shot.xDirectionzzz} and y-direction = {shot.yDirectionzzz}')
                 projectiles.append(shot)
 
+            elif event.key == pygame.K_9:
+                dude = Enemy(gameWindow, spawn_x, spawn_y, 69, 69, 420, enemySpeed, mousePosition[0], (screenHeight - mousePosition[1]))
+                enemies.append(dude)
+                pygame.draw.rect(gameWindow, 'red', pygame.Rect(spawn_x, spawn_y, 100 * px, 100 * px))
+
         # Close game if the game windows close button is pressed
         elif event.type == pygame.QUIT:
             Running = False
@@ -139,6 +152,20 @@ while Running:
         i.move(movementSpeed)
         i.travel(centerX)
         i.draw()
+
+    for i in enemies:
+        i.move(movementSpeed)
+        i.travel(centerX)
+        i.draw()
+
+    spawn_x += 200
+
+    if spawn_x > screenWidth - 50:
+        spawn_x = 0
+        spawn_y += 200
+
+    if spawn_y > screenHeight - 50:
+        spawn_y = 0
 
     display_mouse_coordinates()
 

@@ -96,6 +96,31 @@ class Player():
         # blit.overShirt
         # blit.hat?
 
+class Enemy(GameObject):
+    def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height, enemy_damage,
+                 enemy_speed, mouse_x, mouse_y):
+        super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
+        self.damage = enemy_damage
+        self.speed = enemy_speed
+        self.mouseX = mouse_x
+        self.mouseY = mouse_y
+        self.angle = math.atan((self.mouseY - self.yPos)/(self.mouseX - self.xPos))
+
+    def travel(self, center_x):
+        if self.mouseX < center_x:
+            self.xPos -= math.cos(self.angle) * self.speed
+            self.yPos += math.sin(self.angle) * self.speed
+        elif self.mouseX > center_x:
+            self.xPos += math.cos(self.angle) * self.speed
+            self.yPos -= math.sin(self.angle) * self.speed
+
+    def draw(self):
+        if self.xPos > -1:
+
+            pygame.draw.circle(self.gameWindow, 'red', (self.xPos, self.yPos), 10)
+
+
+
 
 class Projectile(GameObject):
     def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height, projectile_damage,
