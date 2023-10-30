@@ -118,9 +118,11 @@ class Projectile(GameObject):
             self.yPos -= math.sin(self.angle) * self.speed
 
     def draw(self):
-        pygame.draw.circle(self.gameWindow, 'yellow', (self.xPos, self.yPos), 10)
-        pygame.draw.circle(self.gameWindow, 'white', (-1, 310), 10)
-        #pygame.draw.circle(self.gameWindow, 'white', (0, 300), 10)
+        if self.xPos > -1:
+
+            pygame.draw.circle(self.gameWindow, 'yellow', (self.xPos, self.yPos), 10)
+            # pygame.draw.circle(self.gameWindow, 'white', (-1, 310), 10)
+            pygame.draw.circle(self.gameWindow, 'white', (0, 300), 10)
 
 '''
 class test:

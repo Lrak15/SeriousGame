@@ -86,6 +86,7 @@ while Running:
 
     movementSpeed = 2
     projectileSpeed = 10
+    # make projectilespeed inside clasSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
     mousePosition = pygame.mouse.get_pos()
 
     gameWindow.fill('blue')
