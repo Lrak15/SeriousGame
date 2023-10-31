@@ -129,7 +129,7 @@ while Running:
                 projectiles.append(shot)
 
             elif event.key == pygame.K_9:
-                dude = Enemy(gameWindow, spawn_x, spawn_y, 69, 69, 420, enemySpeed, mousePosition[0], (screenHeight - mousePosition[1]))
+                dude = Enemy(gameWindow, spawn_x, spawn_y, 69, 69, 420, enemySpeed)
                 enemies.append(dude)
                 pygame.draw.rect(gameWindow, 'red', pygame.Rect(spawn_x, spawn_y, 100 * px, 100 * px))
 
@@ -155,7 +155,7 @@ while Running:
 
     for i in enemies:
         i.move(movementSpeed)
-        i.travel(centerX)
+        i.travel(centerX, centerY)
         i.draw()
 
     spawn_x += 200
