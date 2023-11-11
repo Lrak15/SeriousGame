@@ -107,11 +107,11 @@ class Enemy(GameObject):
         angle = math.atan((center_y - self.yPos) / (center_x - self.xPos))
 
         if self.xPos < center_x:
-            self.xPos -= math.cos(angle) * self.speed
+            self.xPos += math.cos(angle) * self.speed
             self.yPos += math.sin(angle) * self.speed
 
         elif self.xPos > center_x:
-            self.xPos += math.cos(angle) * self.speed
+            self.xPos -= math.cos(angle) * self.speed
             self.yPos -= math.sin(angle) * self.speed
 
     def draw(self):
