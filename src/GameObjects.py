@@ -1,5 +1,6 @@
 import math
 import pygame
+from random import randrange
 
 
 class GameObject:
@@ -117,7 +118,7 @@ class Enemy(GameObject):
     def draw(self):
         if self.xPos > -1:
 
-            pygame.draw.circle(self.gameWindow, 'red', (self.xPos, self.yPos), 10)
+            pygame.draw.circle(self.gameWindow, (randrange(255), randrange(255), 255), (self.xPos, self.yPos), 3)
 
 
 

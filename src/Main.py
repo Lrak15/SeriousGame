@@ -103,11 +103,11 @@ while Running:
 
     movementSpeed = 2
     projectileSpeed = 10
-    enemySpeed = 500
+    enemySpeed = 100
     # make projectilespeed inside clasSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
     mousePosition = pygame.mouse.get_pos()
 
-    gameWindow.fill('black')
+    gameWindow.fill('grey')
 
     # Check for pygame events
     for event in pygame.event.get():
@@ -145,7 +145,7 @@ while Running:
 
     dude = Enemy(gameWindow, spawn_x, spawn_y, 69, 69, 420, enemySpeed)
     enemies.append(dude)
-    pygame.draw.rect(gameWindow, 'red', pygame.Rect(spawn_x, spawn_y, 100 * px, 100 * px))
+    # pygame.draw.rect(gameWindow, 'red', pygame.Rect(spawn_x, spawn_y, 100 * px, 100 * px))
 
     for i in graveyardHitBoxes:
         i.move(movementSpeed)
@@ -171,10 +171,6 @@ while Running:
 
     if spawn_y > screenHeight - 50:
         spawn_y = 0
-
-    pygame.draw.circle(gameWindow, 'yellow', (465, 536), 10, 5)
-    pygame.draw.circle(gameWindow, 'yellow', (815, 184), 10, 5)
-    pygame.draw.circle(gameWindow, 'red', (200, -100), 1000, 10)
 
     display_mouse_coordinates()
 
