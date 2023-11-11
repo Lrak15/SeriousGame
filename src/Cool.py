@@ -1,3 +1,4 @@
+'''
 
 # Import libraries
 from GameObjects import GameObject
@@ -102,8 +103,8 @@ while Running:
     timer.tick(fps)
 
     movementSpeed = 2
-    projectileSpeed = 100
-    enemySpeed = 4
+    projectileSpeed = 10
+    enemySpeed = 100
     # make projectilespeed inside clasSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
     mousePosition = pygame.mouse.get_pos()
 
@@ -119,45 +120,33 @@ while Running:
             if event.key == pygame.K_ESCAPE:
                 Running = False
 
+            if event.key == pygame.K_0:
+                shot = Projectile(gameWindow, centerX, centerY, 69, 69, 420, projectileSpeed, mousePosition[0],
+                                  (screenHeight - mousePosition[1]))
+
+                print(f'mouseX({mousePosition[0]}) - centerX({centerX}) = {mousePosition[0] - centerX}')
+                print(f'mouseY({screenHeight - mousePosition[1]}) - centerY({centerY}) = {(screenHeight - mousePosition[1]) - centerY}')
+                print(f'angle between these is arctan({(screenHeight - mousePosition[1]) - centerY} / {mousePosition[0] - centerX}) = {shot.angle}')
+                # print(f'x-direction = {shot.xDirectionzzz} and y-direction = {shot.yDirectionzzz}')
+                projectiles.append(shot)
+
+            # elif event.key == pygame.K_9:
+            #    dude = Enemy(gameWindow, spawn_x, spawn_y, 69, 69, 420, enemySpeed)
+            #    enemies.append(dude)
+            #    pygame.draw.rect(gameWindow, 'red', pygame.Rect(spawn_x, spawn_y, 100 * px, 100 * px))
+
         # Close game if the game windows close button is pressed
         elif event.type == pygame.QUIT:
             Running = False
-
-    leftClick = pygame.mouse.get_pressed()[0]
-    rightClick = pygame.mouse.get_pressed()[2]
-
-    if leftClick:
-        try:
-            angle = (math.atan((mousePosition[1] - centerY) / (mousePosition[0] - centerX)))
-        except ZeroDivisionError:
-            angle = 1.57079633
-
-        '''
-        if mousePosition[0] == centerX:
-            angle = 1.57079633
-        elif mousePosition[0] == centerX and mousePosition[1] < centerY:
-            angle = 4.71238898
-        else:
-            angle = (math.atan((mousePosition[1] - centerY) / (mousePosition[0] - centerX)))
-
-        shot = Projectile(gameWindow, centerX, centerY, 69, 69, 420, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle)
-        '''
-
-        print(f'mouseX({mousePosition[0]}) - centerX({centerX}) = {mousePosition[0] - centerX}')
-        print(f'mouseY({screenHeight - mousePosition[1]}) - centerY({centerY}) = {(screenHeight - mousePosition[1]) - centerY}')
-        print(f'angle between these is arctan({(screenHeight - mousePosition[1]) - centerY} / {mousePosition[0] - centerX}) = {shot.angle}')
-        # print(f'x-direction = {shot.xDirectionzzz} and y-direction = {shot.yDirectionzzz}')
-        projectiles.append(shot)
-
-    if rightClick:
-        dude = Enemy(gameWindow, spawn_x, spawn_y, 69, 69, 420, enemySpeed)
-        enemies.append(dude)
-        pygame.draw.rect(gameWindow, 'red', pygame.Rect(spawn_x, spawn_y, 100 * px, 100 * px))
 
     reticle = pygame.draw.rect(gameWindow, 'purple', pygame.Rect(mousePosition[0], mousePosition[1], 10 * px, 10 * px), 3 * px)
 
     graveyardStructureTing.move(movementSpeed)
     graveyardStructureTing.draw()
+
+    dude = Enemy(gameWindow, spawn_x, spawn_y, 69, 69, 420, enemySpeed)
+    enemies.append(dude)
+    # pygame.draw.rect(gameWindow, 'red', pygame.Rect(spawn_x, spawn_y, 100 * px, 100 * px))
 
     for i in graveyardHitBoxes:
         i.move(movementSpeed)
@@ -188,3 +177,5 @@ while Running:
 
     # Update game window
     pygame.display.flip()
+
+'''
