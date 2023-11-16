@@ -26,24 +26,16 @@ print(centerX)
 print(screenHeight)
 print(centerY)
 
-tingeling1, tingeling2 = screenWidth / 16, screenHeight / 9
-tingeling3 = tingeling1 / tingeling2
-if tingeling3 == 1:
-    print('Your screen is in 16/9 format :)')
-else:
-    print('!!!Your screen is NOT in 16/9 format!!!')
-    # Can i make this text display in red instead ?????????????????????????????????????????????????????????????????????????????????
-
 # Define pixel size
 px = round(screenHeight / 200)
+
+# Load font
+font = pygame.font.Font('freesansbold.ttf', 20)
 
 # Load images
 graveyard = pygame.image.load('Graphics/graveyard.png')
 graveyard = pygame.transform.scale(graveyard, (100 * px, 100 * px))
 graveyardRect = graveyard.get_rect()
-
-# Load font
-font = pygame.font.Font('freesansbold.ttf', 20)
 
 calculatorForGameobjects = GameObject(gameWindow, 69, 69, 69, 69)
 
@@ -103,7 +95,7 @@ while Running:
 
     movementSpeed = 2
     projectileSpeed = 100
-    enemySpeed = 4
+    enemySpeed = 400
     # make projectilespeed inside clasSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
     mousePosition = pygame.mouse.get_pos()
 
@@ -140,8 +132,9 @@ while Running:
         else:
             angle = (math.atan((mousePosition[1] - centerY) / (mousePosition[0] - centerX)))
 
-        shot = Projectile(gameWindow, centerX, centerY, 69, 69, 420, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle)
+        
         '''
+        shot = Projectile(gameWindow, centerX, centerY, 69, 69, 420, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle)
 
         print(f'mouseX({mousePosition[0]}) - centerX({centerX}) = {mousePosition[0] - centerX}')
         print(f'mouseY({screenHeight - mousePosition[1]}) - centerY({centerY}) = {(screenHeight - mousePosition[1]) - centerY}')
