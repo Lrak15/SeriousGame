@@ -77,18 +77,24 @@ class HitBox(GameObject):
         super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
         self.color = cool_variable_color
         self.thickness = cool_border_thickness_variable
+        self.player_hitbox = pygame.Rect()
+
 
     def draw(self):
         pygame.draw.rect(self.gameWindow, self.color, pygame.Rect(self.xPos, self.yPos, self.width, self.height),
                          self.thickness)
 
-# class Player('???'):
+    def draw_player_hitbox
+        pygame.draw.rect(self.gameWindow, 'blue', self.player_hitbox)
+
+
 class Player():
-    def __init__(self):
+    def __init__(self, game_window, center_x, center_y):
         pass
 
     def draw(self):
-        pass
+        pygame.draw.rect(self.gameWindow, 'blue', self.player_hitbox)
+
         # blit.shoes
         # blit.shirt
         # blit.pants

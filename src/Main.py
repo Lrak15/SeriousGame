@@ -48,11 +48,20 @@ graveyardHitBox4 = HitBox(gameWindow, 400, 400, 40, 40, 'red', px)
 
 graveyardHitBoxes = [graveyardHitBox1, graveyardHitBox2, graveyardHitBox3, graveyardHitBox4]
 
+player_width = 100
+player_heigth = 200
+
 projectiles = []
 enemies = []
 
 spawn_x = 0
 spawn_y = 0
+
+def check_collisions():
+    collision_tolerance = 10
+    for hitbox in graveyardHitBoxes:
+        if hitbox.colliderect(Player.)
+
 
 def display_mouse_coordinates():
     mouse_coordinates = font.render(f'coordinates: {mousePosition[0]} ; {mousePosition[1]}', True, 'red')
@@ -149,6 +158,8 @@ while Running:
 
     reticle = pygame.draw.rect(gameWindow, 'purple', pygame.Rect(mousePosition[0], mousePosition[1], 10 * px, 10 * px), 3 * px)
 
+    #checkCollisions()
+
     graveyardStructureTing.move(movementSpeed)
     graveyardStructureTing.draw()
 
@@ -176,6 +187,8 @@ while Running:
 
     if spawn_y > screenHeight - 50:
         spawn_y = 0
+
+    player.draw()
 
     display_mouse_coordinates()
 
