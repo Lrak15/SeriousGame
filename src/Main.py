@@ -147,7 +147,7 @@ while Running:
             Running = False
 
     if leftClick:
-        if attackDelay <= 0:
+        if attackDelay == 0:
             attackDelay = 10
             try:
                 angle = (math.atan((mousePosition[1] - centerY) / (mousePosition[0] - centerX)))
@@ -172,16 +172,17 @@ while Running:
             # print(f'x-direction = {shot.xDirectionzzz} and y-direction = {shot.yDirectionzzz}')
             projectiles.append(shot)
 
-    attackDelay -= 1
+    if attackDelay != 0:
+        attackDelay -= 1
+
+    if spawnDelay != 0:
+        spawnDelay -= 1
 
     if Spawning:
         if spawnDelay == 0:
             dude = Enemy(gameWindow, spawn_x, spawn_y, 100, 100, 4, enemySpeed, 3)
             enemies.append(dude)
-
-    spawnDelay -= 1
-    if spawnDelay < 0:
-        spawnDelay = 50
+            spawnDelay = 50
 
     graveyardStructureTing.move(movementSpeed)
     graveyardStructureTing.draw()
@@ -197,7 +198,10 @@ while Running:
 
             if monster.xPos <= attack.xPos <= monster.xPos + monster.width and monster.yPos <= attack.yPos <= monster.yPos + monster.height:
                 monster.health -= 1
-                projectiles.remove(attack)
+                try:
+                    projectiles.remove(attack)
+                except ValueError:
+                    pass
 
         attack.move(movementSpeed)
         attack.travel(centerX)

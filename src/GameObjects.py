@@ -152,7 +152,7 @@ class Projectile(GameObject):
         self.mouseX = mouse_x
         self.mouseY = mouse_y
         self.angle = cool_variable_angle
-        self.color = (randrange(50)+205, randrange(50)+150, 50)
+        self.color = (255, randrange(150)+105, 0)
         # self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
 
     def travel(self, center_x):
