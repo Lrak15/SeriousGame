@@ -71,29 +71,34 @@ class Structure(GameObject):
         self.gameWindow.blit(self.graphics, (self.xPos, self.yPos))
 
 
+
 class HitBox(GameObject):
     def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height, cool_variable_color,
                  cool_border_thickness_variable):
         super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
         self.color = cool_variable_color
         self.thickness = cool_border_thickness_variable
-        self.player_hitbox = pygame.Rect()
+        # self.player_hitbox = pygame.Rect()
 
 
     def draw(self):
         pygame.draw.rect(self.gameWindow, self.color, pygame.Rect(self.xPos, self.yPos, self.width, self.height),
                          self.thickness)
 
+    '''
     def draw_player_hitbox
         pygame.draw.rect(self.gameWindow, 'blue', self.player_hitbox)
-
+    '''
 
 class Player():
-    def __init__(self, game_window, center_x, center_y):
-        pass
+    def __init__(self, game_window, center_x, center_y, width, height):
+        self.gameWindow = game_window
+        self.xPos = center_x - width / 2
+        self.yPos = center_y - height / 2
+        self.hitbox = pygame.Rect(self.xPos, self.yPos, width, height)
 
     def draw(self):
-        pygame.draw.rect(self.gameWindow, 'blue', self.player_hitbox)
+        pygame.draw.rect(self.gameWindow, 'blue', self.hitbox)
 
         # blit.shoes
         # blit.shirt
@@ -109,6 +114,9 @@ class Enemy(GameObject):
         super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
         self.damage = enemy_damage
         self.speed = enemy_speed
+        self.color = (randrange(255), 0, 0)
+        self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
+
 
     def travel(self, center_x, center_y):
         angle = math.atan((center_y - self.yPos) / (center_x - self.xPos))
@@ -121,10 +129,15 @@ class Enemy(GameObject):
             self.xPos -= math.cos(angle) * self.speed
             self.yPos -= math.sin(angle) * self.speed
 
-    def draw(self):
-        if self.xPos > -1:
+        # Updating hitbox
+        self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
 
-            pygame.draw.circle(self.gameWindow, (randrange(255), 0, 0), (self.xPos, self.yPos), 10)
+    def draw(self):
+        pygame.draw.rect(self.gameWindow, self.color, self.hitbox)
+
+    def attack(self):
+        if self.hitbox.colliderect(self.playerHitbox):
+            self
 
 
 
@@ -138,10 +151,8 @@ class Projectile(GameObject):
         self.mouseX = mouse_x
         self.mouseY = mouse_y
         self.angle = cool_variable_angle
-        # self.angle = (math.atan((self.mouseY - self.yPos)/(self.mouseX - self.xPos)))
-
-        # self.xDirectionzzz = self.xPos + math.cos(self.angle) * self.speed
-        # self.yDirectionzzz = self.yPos + math.sin(self.angle) * self.speed
+        self.color = (randrange(50)+205, randrange(50)+180, 100)
+        self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
 
     def travel(self, center_x):
         if self.mouseX > center_x:
@@ -151,7 +162,15 @@ class Projectile(GameObject):
             self.xPos -= math.cos(self.angle) * self.speed
             self.yPos -= math.sin(self.angle) * self.speed
 
+            # Updating hitbox
+            self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
+
     def draw(self):
+        pygame.draw.rect(self.gameWindow, self.color, self.hitbox)
+
+
+
+
         if self.xPos > -1:
 
             pygame.draw.circle(self.gameWindow, 'yellow', (self.xPos, self.yPos), 10)

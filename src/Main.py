@@ -6,6 +6,7 @@ from GameObjects import HitBox
 from GameObjects import Player
 from GameObjects import Enemy
 from GameObjects import Projectile
+from random import randrange
 import math
 import pygame
 pygame.init()
@@ -48,28 +49,44 @@ graveyardHitBox4 = HitBox(gameWindow, 400, 400, 40, 40, 'red', px)
 
 graveyardHitBoxes = [graveyardHitBox1, graveyardHitBox2, graveyardHitBox3, graveyardHitBox4]
 
+player_health = 100
 player_width = 100
 player_heigth = 200
+
+player = Player(gameWindow, centerX, centerY, player_width, player_heigth)
+
+spawnDelay = 100
 
 projectiles = []
 enemies = []
 
-spawn_x = 0
-spawn_y = 0
 
+'''
 def check_collisions():
     collision_tolerance = 10
     for hitbox in graveyardHitBoxes:
         if hitbox.colliderect(Player.)
-
+'''
 
 def display_mouse_coordinates():
     mouse_coordinates = font.render(f'coordinates: {mousePosition[0]} ; {mousePosition[1]}', True, 'red')
     gameWindow.blit(mouse_coordinates, (mousePosition[0], mousePosition[1]))
 
 
+def enemy_attack(enemy, player):
+    if enemy.hitbox.colliderect(player.hitbox):
+        player_health = 25
+        del enemies[0]
+
+
+    # if abs(first.xPos - second.xPos) <= 5 and abs(first.yPos - second.yPos) <= 5:
+
+
+
+
 Customise = True
 Running = True
+Spawning = False
 
 
 while Customise:
@@ -103,10 +120,14 @@ while Running:
     timer.tick(fps)
 
     movementSpeed = 2
-    projectileSpeed = 100
-    enemySpeed = 400
+    projectileSpeed = 10
+    enemySpeed = 3
+    spawn_x = randrange(screenWidth)
+    spawn_y = randrange(screenHeight)
     # make projectilespeed inside clasSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
     mousePosition = pygame.mouse.get_pos()
+    leftClick = pygame.mouse.get_pressed()[0]
+    rightClick = pygame.mouse.get_pressed()[2]
 
     gameWindow.fill('grey')
 
@@ -120,12 +141,16 @@ while Running:
             if event.key == pygame.K_ESCAPE:
                 Running = False
 
+            elif event.key == pygame.K_0:
+                Spawning = True
+
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_0:
+                Spawning = True
+
         # Close game if the game windows close button is pressed
         elif event.type == pygame.QUIT:
             Running = False
-
-    leftClick = pygame.mouse.get_pressed()[0]
-    rightClick = pygame.mouse.get_pressed()[2]
 
     if leftClick:
         try:
@@ -151,10 +176,15 @@ while Running:
         # print(f'x-direction = {shot.xDirectionzzz} and y-direction = {shot.yDirectionzzz}')
         projectiles.append(shot)
 
-    if rightClick:
-        dude = Enemy(gameWindow, spawn_x, spawn_y, 69, 69, 420, enemySpeed)
-        enemies.append(dude)
-        pygame.draw.rect(gameWindow, 'red', pygame.Rect(spawn_x, spawn_y, 100 * px, 100 * px))
+    if Spawning:
+        if spawnDelay == 0:
+            dude = Enemy(gameWindow, spawn_x, spawn_y, 690, 690, 420, enemySpeed)
+            enemies.append(dude)
+            pygame.draw.rect(gameWindow, 'red', pygame.Rect(100, 100, 100 * px, 100 * px))
+
+    spawnDelay -= 1
+    if spawnDelay < 0:
+        spawnDelay = 100
 
     reticle = pygame.draw.rect(gameWindow, 'purple', pygame.Rect(mousePosition[0], mousePosition[1], 10 * px, 10 * px), 3 * px)
 
@@ -163,32 +193,34 @@ while Running:
     graveyardStructureTing.move(movementSpeed)
     graveyardStructureTing.draw()
 
+    player.draw()
+
     for i in graveyardHitBoxes:
         i.move(movementSpeed)
         i.draw()
 
-    for i in projectiles:
-        if i.xPos < 0 or i.xPos > screenWidth or i.yPos < 0 or i.yPos > screenHeight:
-            projectiles.remove(i)
-        i.move(movementSpeed)
-        i.travel(centerX)
-        i.draw()
+    for attack in projectiles:
+        for monster in enemies:
+            if abs(monster.xPos - attack.xPos) <= monster.width and abs(monster.yPos - attack.yPos) <= monster.height:
+                enemies.remove(monster)
+                projectiles.remove(attack)
+
+
+        if attack.xPos < 0 or attack.xPos > screenWidth or attack.yPos < 0 or attack.yPos > screenHeight:
+            projectiles.remove(attack)
+        attack.move(movementSpeed)
+        attack.travel(centerX)
+        attack.draw()
 
     for i in enemies:
+        enemy_attack(i, player)
         i.move(movementSpeed)
         i.travel(centerX, centerY)
         i.draw()
 
-    spawn_x += 200
 
-    if spawn_x > screenWidth - 50:
-        spawn_x = 0
-        spawn_y += 200
 
-    if spawn_y > screenHeight - 50:
-        spawn_y = 0
-
-    player.draw()
+    # player.draw()
 
     display_mouse_coordinates()
 
