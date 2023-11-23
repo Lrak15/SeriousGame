@@ -55,7 +55,8 @@ player_heigth = 200
 
 player = Player(gameWindow, centerX, centerY, player_width, player_heigth)
 
-spawnDelay = 100
+spawnDelay = 50
+attackDelay = 0
 
 projectiles = []
 enemies = []
@@ -73,10 +74,10 @@ def display_mouse_coordinates():
     gameWindow.blit(mouse_coordinates, (mousePosition[0], mousePosition[1]))
 
 
-def enemy_attack(enemy, player):
-    if enemy.hitbox.colliderect(player.hitbox):
+def enemy_attack(monster, player):
+    if monster.hitbox.colliderect(player.hitbox):
         player_health = 25
-        del enemies[0]
+        enemies.remove(monster)
 
 
     # if abs(first.xPos - second.xPos) <= 5 and abs(first.yPos - second.yPos) <= 5:
@@ -86,7 +87,7 @@ def enemy_attack(enemy, player):
 
 Customise = True
 Running = True
-Spawning = False
+Spawning = True
 
 
 while Customise:
@@ -141,54 +142,46 @@ while Running:
             if event.key == pygame.K_ESCAPE:
                 Running = False
 
-            elif event.key == pygame.K_0:
-                Spawning = True
-
-        elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_0:
-                Spawning = True
-
         # Close game if the game windows close button is pressed
         elif event.type == pygame.QUIT:
             Running = False
 
     if leftClick:
-        try:
-            angle = (math.atan((mousePosition[1] - centerY) / (mousePosition[0] - centerX)))
-        except ZeroDivisionError:
-            angle = 1.57079633
+        if attackDelay <= 0:
+            attackDelay = 10
+            try:
+                angle = (math.atan((mousePosition[1] - centerY) / (mousePosition[0] - centerX)))
+            except ZeroDivisionError:
+                angle = 1.57079633
 
-        '''
-        if mousePosition[0] == centerX:
-            angle = 1.57079633
-        elif mousePosition[0] == centerX and mousePosition[1] < centerY:
-            angle = 4.71238898
-        else:
-            angle = (math.atan((mousePosition[1] - centerY) / (mousePosition[0] - centerX)))
+            '''
+            if mousePosition[0] == centerX:
+                angle = 1.57079633
+            elif mousePosition[0] == centerX and mousePosition[1] < centerY:
+                angle = 4.71238898
+            else:
+                angle = (math.atan((mousePosition[1] - centerY) / (mousePosition[0] - centerX)))
+    
+            
+            '''
+            shot = Projectile(gameWindow, centerX, centerY, 69, 69, 420, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle)
 
-        
-        '''
-        shot = Projectile(gameWindow, centerX, centerY, 69, 69, 420, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle)
+            print(f'mouseX({mousePosition[0]}) - centerX({centerX}) = {mousePosition[0] - centerX}')
+            print(f'mouseY({screenHeight - mousePosition[1]}) - centerY({centerY}) = {(screenHeight - mousePosition[1]) - centerY}')
+            print(f'angle between these is arctan({(screenHeight - mousePosition[1]) - centerY} / {mousePosition[0] - centerX}) = {shot.angle}')
+            # print(f'x-direction = {shot.xDirectionzzz} and y-direction = {shot.yDirectionzzz}')
+            projectiles.append(shot)
 
-        print(f'mouseX({mousePosition[0]}) - centerX({centerX}) = {mousePosition[0] - centerX}')
-        print(f'mouseY({screenHeight - mousePosition[1]}) - centerY({centerY}) = {(screenHeight - mousePosition[1]) - centerY}')
-        print(f'angle between these is arctan({(screenHeight - mousePosition[1]) - centerY} / {mousePosition[0] - centerX}) = {shot.angle}')
-        # print(f'x-direction = {shot.xDirectionzzz} and y-direction = {shot.yDirectionzzz}')
-        projectiles.append(shot)
+    attackDelay -= 1
 
     if Spawning:
         if spawnDelay == 0:
-            dude = Enemy(gameWindow, spawn_x, spawn_y, 690, 690, 420, enemySpeed)
+            dude = Enemy(gameWindow, spawn_x, spawn_y, 100, 100, 4, enemySpeed, 3)
             enemies.append(dude)
-            pygame.draw.rect(gameWindow, 'red', pygame.Rect(100, 100, 100 * px, 100 * px))
 
     spawnDelay -= 1
     if spawnDelay < 0:
-        spawnDelay = 100
-
-    reticle = pygame.draw.rect(gameWindow, 'purple', pygame.Rect(mousePosition[0], mousePosition[1], 10 * px, 10 * px), 3 * px)
-
-    #checkCollisions()
+        spawnDelay = 50
 
     graveyardStructureTing.move(movementSpeed)
     graveyardStructureTing.draw()
@@ -201,26 +194,22 @@ while Running:
 
     for attack in projectiles:
         for monster in enemies:
-            if abs(monster.xPos - attack.xPos) <= monster.width and abs(monster.yPos - attack.yPos) <= monster.height:
-                enemies.remove(monster)
+
+            if monster.xPos <= attack.xPos <= monster.xPos + monster.width and monster.yPos <= attack.yPos <= monster.yPos + monster.height:
+                monster.health -= 1
                 projectiles.remove(attack)
 
-
-        if attack.xPos < 0 or attack.xPos > screenWidth or attack.yPos < 0 or attack.yPos > screenHeight:
-            projectiles.remove(attack)
         attack.move(movementSpeed)
         attack.travel(centerX)
         attack.draw()
 
-    for i in enemies:
-        enemy_attack(i, player)
-        i.move(movementSpeed)
-        i.travel(centerX, centerY)
-        i.draw()
-
-
-
-    # player.draw()
+    for monster in enemies:
+        if monster.health == 0:
+            enemies.remove(monster)
+        enemy_attack(monster, player)
+        monster.move(movementSpeed)
+        monster.travel(centerX, centerY)
+        monster.draw()
 
     display_mouse_coordinates()
 
