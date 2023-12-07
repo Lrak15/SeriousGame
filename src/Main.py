@@ -6,7 +6,6 @@ from GameObjects import HitBox
 from GameObjects import Player
 from GameObjects import Enemy
 from GameObjects import Projectile
-from GameObjects import Willpower
 from random import randrange
 import math
 import pygame
@@ -39,6 +38,9 @@ graveyard = pygame.image.load('Graphics/graveyard.png')
 graveyard = pygame.transform.scale(graveyard, (100 * px, 100 * px))
 graveyardRect = graveyard.get_rect()
 
+spillermandhahasej = pygame.image.load('Graphics/PLayer.png')
+spiller = pygame.transform.scale(spillermandhahasej, (100, 200))
+
 rygemonster = pygame.image.load('Graphics/Ryge_monster.png')
 fjende = pygame.transform.scale(rygemonster, (100, 100))
 
@@ -57,12 +59,13 @@ player_health = 100
 player_width = 100
 player_heigth = 200
 
-player = Player(gameWindow, centerX, centerY, player_width, player_heigth)
-
-willpowerBar = Willpower(gameWindow, 69, 69, 69, 69)
+player = Player(gameWindow, centerX, centerY, player_width, player_heigth, spiller)
 
 spawnDelay = 10
 attackDelay = 0
+
+willpowerPoints = 0
+willpowerLevel = 0
 
 projectiles = []
 enemies = []
@@ -75,10 +78,25 @@ def check_collisions():
         if hitbox.colliderect(Player.)
 '''
 
+
 def display_mouse_coordinates():
     mouse_coordinates = font.render(f'coordinates: {mousePosition[0]} ; {mousePosition[1]}', True, 'red')
     gameWindow.blit(mouse_coordinates, (mousePosition[0], mousePosition[1]))
 
+
+def willpower_bar(points, level):
+
+    level_progression = 10 + willpowerLevel * 5
+
+    points_display = font.render(f'{points}/{level_progression}', True, 'purple')
+    level_display = font.render(f'-LEVEL({level})-', True, 'purple')
+
+    pygame.draw.rect(gameWindow, 'black', (100, 650, 1100, 50))
+    pygame.draw.rect(gameWindow, 'darkgrey', (110, 660, 1080, 30))
+    pygame.draw.rect(gameWindow, 'yellow', (110, 660, (points / level_progression) * 1080, 30))
+
+    gameWindow.blit(points_display, (115, 666))
+    gameWindow.blit(level_display, (1080, 666))
 
 def enemy_attack(monster, player):
     if monster.hitbox.colliderect(player.hitbox):
@@ -184,7 +202,7 @@ while Running:
 
     if Spawning:
         if spawnDelay == 0:
-            dude = Enemy(gameWindow, spawn_x, spawn_y, 100, 100, 4, enemySpeed, 3, fjende)
+            dude = Enemy(gameWindow, spawn_x, spawn_y, 100, 100, 4, enemySpeed, 1, fjende)
             enemies.append(dude)
 
     spawnDelay -= 1
@@ -218,6 +236,7 @@ while Running:
     for monster in enemies:
         if monster.health == 0:
             enemies.remove(monster)
+            willpowerPoints += 1
         enemy_attack(monster, player)
         monster.move(movementSpeed)
         monster.travel(centerX, centerY)
@@ -225,7 +244,11 @@ while Running:
 
     display_mouse_coordinates()
 
-    willpowerBar.draw()
+    willpower_bar(willpowerPoints, willpowerLevel)
+
+    if willpowerPoints >= 10 + willpowerLevel * 2:
+        willpowerLevel += 1
+        willpowerPoints = 0
 
     # Update game window
     pygame.display.flip()

@@ -91,14 +91,16 @@ class HitBox(GameObject):
     '''
 
 class Player():
-    def __init__(self, game_window, center_x, center_y, width, height):
+    def __init__(self, game_window, center_x, center_y, width, height, player_image):
         self.gameWindow = game_window
         self.xPos = center_x - width / 2
         self.yPos = center_y - height / 2
+        self.image = player_image
         self.hitbox = pygame.Rect(self.xPos, self.yPos, width, height)
 
     def draw(self):
-        pygame.draw.rect(self.gameWindow, 'blue', self.hitbox)
+        self.gameWindow.blit(self.image, self.hitbox)
+        pygame.draw.rect(self.gameWindow, 'blue', self.hitbox, 2)
 
         # blit.shoes
         # blit.shirt
@@ -110,7 +112,7 @@ class Player():
 
 class Enemy(GameObject):
     def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height, enemy_damage,
-                 enemy_speed, enemy_health,enemy_image):
+                 enemy_speed, enemy_health, enemy_image):
         super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
         self.damage = enemy_damage
         self.speed = enemy_speed
@@ -176,17 +178,6 @@ class Projectile(GameObject):
         if self.xPos > -1:
 
             pygame.draw.circle(self.gameWindow, self.color, (self.xPos, self.yPos), 10)
-
-
-class Willpower(GameObject):
-    def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height):
-        super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
-        self.points = 0
-        self.level = 0
-
-    def draw(self):
-        pygame.draw.rect(self.gameWindow, 'black', (100, 650, 1100, 50))
-        pass
 
 
 
