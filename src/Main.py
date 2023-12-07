@@ -79,24 +79,61 @@ def check_collisions():
 '''
 
 
+def calculate_movement(movement_speed):
+    global w_moved, a_moved, s_moved, d_moved
+
+    key_pressed = pygame.key.get_pressed()
+
+    if key_pressed[pygame.K_w]:
+        w_moved = movement_speed
+
+    if key_pressed[pygame.K_a]:
+        a_moved = movement_speed
+
+    if key_pressed[pygame.K_s]:
+        s_moved = -movement_speed
+
+    if key_pressed[pygame.K_d]:
+        d_moved = -movement_speed
+
+    # The following code checks if a movement in the vertical direction and a movement in the horizontal direction
+    # both aren't equal to 0, meaning that there is diagonal movement. If so, both movement directions, making up
+    # the diagonal movement, is shortened, so that the diagonal movement speed is the same speed as vertical or
+    # horizontal movement
+    if w_moved and a_moved != 0:
+        w_moved = math.sin(45) * movement_speed
+        a_moved = math.sin(45) * movement_speed
+
+    if w_moved and d_moved != 0:
+        w_moved = math.sin(45) * movement_speed
+        d_moved = -math.sin(45) * movement_speed
+
+    if s_moved and a_moved != 0:
+        s_moved = -math.sin(45) * movement_speed
+        a_moved = math.sin(45) * movement_speed
+
+    if s_moved and d_moved != 0:
+        s_moved = -math.sin(45) * movement_speed
+        d_moved = -math.sin(45) * movement_speed
+
+
 def display_mouse_coordinates():
     mouse_coordinates = font.render(f'coordinates: {mousePosition[0]} ; {mousePosition[1]}', True, 'red')
     gameWindow.blit(mouse_coordinates, (mousePosition[0], mousePosition[1]))
 
 
-def willpower_bar(points, level):
+def willpower_bar(points, level, progress):
 
-    level_progression = 10 + willpowerLevel * 5
-
-    points_display = font.render(f'{points}/{level_progression}', True, 'purple')
+    points_display = font.render(f'-{points}/{progress}-', True, 'purple')
     level_display = font.render(f'-LEVEL({level})-', True, 'purple')
 
     pygame.draw.rect(gameWindow, 'black', (100, 650, 1100, 50))
     pygame.draw.rect(gameWindow, 'darkgrey', (110, 660, 1080, 30))
-    pygame.draw.rect(gameWindow, 'yellow', (110, 660, (points / level_progression) * 1080, 30))
+    pygame.draw.rect(gameWindow, 'yellow', (110, 660, (points / progress) * 1080, 30))
 
     gameWindow.blit(points_display, (115, 666))
     gameWindow.blit(level_display, (1080, 666))
+
 
 def enemy_attack(monster, player):
     if monster.hitbox.colliderect(player.hitbox):
@@ -147,8 +184,14 @@ while Running:
     timer.tick(fps)
 
     movementSpeed = 4
+    w_moved = 0
+    a_moved = 0
+    s_moved = 0
+    d_moved = 0
+
     projectileSpeed = 10
     enemySpeed = 2
+
     spawn_x = randrange(screenWidth)
     spawn_y = randrange(screenHeight)
     # make projectilespeed inside clasSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
@@ -209,13 +252,15 @@ while Running:
     if spawnDelay < 0:
         spawnDelay = 10
 
-    graveyardStructureTing.move(movementSpeed)
+    calculate_movement(movementSpeed)
+
+    graveyardStructureTing.move(w_moved, a_moved, s_moved, d_moved)
     graveyardStructureTing.draw()
 
     player.draw()
 
     for i in graveyardHitBoxes:
-        i.move(movementSpeed)
+        i.move(w_moved, a_moved, s_moved, d_moved)
         i.draw()
 
     for attack in projectiles:
@@ -228,8 +273,7 @@ while Running:
                 except ValueError:
                     pass
 
-
-        attack.move(movementSpeed)
+        attack.move(w_moved, a_moved, s_moved, d_moved)
         attack.travel(centerX)
         attack.draw()
 
@@ -238,15 +282,15 @@ while Running:
             enemies.remove(monster)
             willpowerPoints += 1
         enemy_attack(monster, player)
-        monster.move(movementSpeed)
+        monster.move(w_moved, a_moved, s_moved, d_moved)
         monster.travel(centerX, centerY)
         monster.draw()
 
     display_mouse_coordinates()
 
-    willpower_bar(willpowerPoints, willpowerLevel)
-
-    if willpowerPoints >= 10 + willpowerLevel * 2:
+    level_progression = 10 + willpowerLevel * 5
+    willpower_bar(willpowerPoints, willpowerLevel, level_progression)
+    if willpowerPoints >= level_progression:
         willpowerLevel += 1
         willpowerPoints = 0
 

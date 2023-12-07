@@ -4,60 +4,17 @@ from random import randrange
 
 
 class GameObject:
-    def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height):
+    def __init__(self, game_window, x_pos, y_pos, width, height):
         self.gameWindow = game_window
-        self.wMoved = 69
-        self.aMoved = 69
-        self.sMoved = 69
-        self.dMoved = 69
-        # self.keyPressed = pygame.key.get_pressed()
         self.xPos = x_pos
         self.yPos = y_pos
-        self.width = cool_variable_width
-        self.height = cool_variable_height
+        self.width = width
+        self.height = height
 
-    def move(self, movement_speed):
-        self.wMoved = 0
-        self.aMoved = 0
-        self.sMoved = 0
-        self.dMoved = 0
-        key_pressed = pygame.key.get_pressed()
-
-        if key_pressed[pygame.K_w]:
-            self.wMoved = movement_speed
-
-        if key_pressed[pygame.K_a]:
-            self.aMoved = movement_speed
-
-        if key_pressed[pygame.K_s]:
-            self.sMoved = -movement_speed
-
-        if key_pressed[pygame.K_d]:
-            self.dMoved = -movement_speed
-
-        # The following code checks if a movement in the vertical direction and a movement in the horizontal direction
-        # both aren't equal to 0, meaning that there is diagonal movement. If so, both movement directions, making up
-        # the diagonal movement, is shortened, so that the diagonal movement speed is the same speed as vertical or
-        # horizontal movement
-        if self.wMoved and self.aMoved != 0:
-            self.wMoved = math.sin(45) * movement_speed
-            self.aMoved = math.sin(45) * movement_speed
-
-        if self.wMoved and self.dMoved != 0:
-            self.wMoved = math.sin(45) * movement_speed
-            self.dMoved = -math.sin(45) * movement_speed
-
-        if self.sMoved and self.aMoved != 0:
-            self.sMoved = -math.sin(45) * movement_speed
-            self.aMoved = math.sin(45) * movement_speed
-
-        if self.sMoved and self.dMoved != 0:
-            self.sMoved = -math.sin(45) * movement_speed
-            self.dMoved = -math.sin(45) * movement_speed
-
+    def move(self, w_moved, a_moved, s_moved, d_moved):
         # Movement in all directions is added up
-        self.xPos += self.aMoved + self.dMoved
-        self.yPos += self.wMoved + self.sMoved
+        self.xPos += a_moved + d_moved
+        self.yPos += w_moved + s_moved
 
 
 class Structure(GameObject):
