@@ -6,6 +6,7 @@ from GameObjects import HitBox
 from GameObjects import Player
 from GameObjects import Enemy
 from GameObjects import Projectile
+from GameObjects import Willpower
 from random import randrange
 import math
 import pygame
@@ -38,6 +39,9 @@ graveyard = pygame.image.load('Graphics/graveyard.png')
 graveyard = pygame.transform.scale(graveyard, (100 * px, 100 * px))
 graveyardRect = graveyard.get_rect()
 
+rygemonster = pygame.image.load('Graphics/Ryge_monster.png')
+fjende = pygame.transform.scale(rygemonster, (100, 100))
+
 calculatorForGameobjects = GameObject(gameWindow, 69, 69, 69, 69)
 
 graveyardStructureTing = Structure(gameWindow, 100, 100, 69, 69, graveyard)
@@ -55,7 +59,9 @@ player_heigth = 200
 
 player = Player(gameWindow, centerX, centerY, player_width, player_heigth)
 
-spawnDelay = 50
+willpowerBar = Willpower(gameWindow, 69, 69, 69, 69)
+
+spawnDelay = 10
 attackDelay = 0
 
 projectiles = []
@@ -77,8 +83,10 @@ def display_mouse_coordinates():
 def enemy_attack(monster, player):
     if monster.hitbox.colliderect(player.hitbox):
         player_health = 25
-        enemies.remove(monster)
-
+        try:
+            enemies.remove(monster)
+        except ValueError:
+            pass
 
     # if abs(first.xPos - second.xPos) <= 5 and abs(first.yPos - second.yPos) <= 5:
 
@@ -120,9 +128,9 @@ while Customise:
 while Running:
     timer.tick(fps)
 
-    movementSpeed = 2
+    movementSpeed = 4
     projectileSpeed = 10
-    enemySpeed = 3
+    enemySpeed = 2
     spawn_x = randrange(screenWidth)
     spawn_y = randrange(screenHeight)
     # make projectilespeed inside clasSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
@@ -147,7 +155,7 @@ while Running:
             Running = False
 
     if leftClick:
-        if attackDelay == 0:
+        if attackDelay <= 0:
             attackDelay = 10
             try:
                 angle = (math.atan((mousePosition[1] - centerY) / (mousePosition[0] - centerX)))
@@ -172,17 +180,16 @@ while Running:
             # print(f'x-direction = {shot.xDirectionzzz} and y-direction = {shot.yDirectionzzz}')
             projectiles.append(shot)
 
-    if attackDelay != 0:
-        attackDelay -= 1
-
-    if spawnDelay != 0:
-        spawnDelay -= 1
+    attackDelay -= 1
 
     if Spawning:
         if spawnDelay == 0:
-            dude = Enemy(gameWindow, spawn_x, spawn_y, 100, 100, 4, enemySpeed, 3)
+            dude = Enemy(gameWindow, spawn_x, spawn_y, 100, 100, 4, enemySpeed, 3, fjende)
             enemies.append(dude)
-            spawnDelay = 50
+
+    spawnDelay -= 1
+    if spawnDelay < 0:
+        spawnDelay = 10
 
     graveyardStructureTing.move(movementSpeed)
     graveyardStructureTing.draw()
@@ -203,6 +210,7 @@ while Running:
                 except ValueError:
                     pass
 
+
         attack.move(movementSpeed)
         attack.travel(centerX)
         attack.draw()
@@ -216,6 +224,8 @@ while Running:
         monster.draw()
 
     display_mouse_coordinates()
+
+    willpowerBar.draw()
 
     # Update game window
     pygame.display.flip()

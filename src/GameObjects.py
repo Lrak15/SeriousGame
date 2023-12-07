@@ -110,13 +110,15 @@ class Player():
 
 class Enemy(GameObject):
     def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height, enemy_damage,
-                 enemy_speed, enemy_health):
+                 enemy_speed, enemy_health,enemy_image):
         super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
         self.damage = enemy_damage
         self.speed = enemy_speed
         self.color = (randrange(255), 0, 0)
         self.health = enemy_health
-        self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
+        self.image = enemy_image
+        # self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
+        self.hitbox = self.image.get_rect()
 
 
     def travel(self, center_x, center_y):
@@ -134,7 +136,9 @@ class Enemy(GameObject):
         self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
 
     def draw(self):
-        pygame.draw.rect(self.gameWindow, self.color, self.hitbox)
+        # pygame.draw.rect(self.gameWindow, self.color, self.hitbox, 2)
+        self.gameWindow.blit(self.image, self.hitbox)
+        pygame.draw.rect(self.gameWindow, 'red', self.hitbox, 2)
 
     def attack(self):
         if self.hitbox.colliderect(self.playerHitbox):
@@ -172,6 +176,19 @@ class Projectile(GameObject):
         if self.xPos > -1:
 
             pygame.draw.circle(self.gameWindow, self.color, (self.xPos, self.yPos), 10)
+
+
+class Willpower(GameObject):
+    def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height):
+        super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
+        self.points = 0
+        self.level = 0
+
+    def draw(self):
+        pygame.draw.rect(self.gameWindow, 'black', (100, 650, 1100, 50))
+        pass
+
+
 
 '''
 class test:
