@@ -18,41 +18,32 @@ class GameObject:
 
 
 class Structure(GameObject):
-    def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height, cool_image):
-        super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
-        self.graphics = cool_image
-        self.hey = 69
-        # width and height needed?
+    def __init__(self, game_window, x_pos, y_pos, width, height, image):
+        super().__init__(game_window, x_pos, y_pos, width, height)
+        self.graphics = image
 
     def draw(self):
         self.gameWindow.blit(self.graphics, (self.xPos, self.yPos))
 
 
-
-class HitBox(GameObject):
-    def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height, cool_variable_color,
-                 cool_border_thickness_variable):
-        super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
-        self.color = cool_variable_color
-        self.thickness = cool_border_thickness_variable
-        # self.player_hitbox = pygame.Rect()
-
+class StructureHitBox(GameObject):
+    def __init__(self, game_window, x_pos, y_pos, width, height, color,
+                 border_thickness):
+        super().__init__(game_window, x_pos, y_pos, width, height)
+        self.color = color
+        self.thickness = border_thickness
 
     def draw(self):
         pygame.draw.rect(self.gameWindow, self.color, pygame.Rect(self.xPos, self.yPos, self.width, self.height),
                          self.thickness)
 
-    '''
-    def draw_player_hitbox
-        pygame.draw.rect(self.gameWindow, 'blue', self.player_hitbox)
-    '''
 
 class Player():
-    def __init__(self, game_window, center_x, center_y, width, height, player_image):
+    def __init__(self, game_window, center_x, center_y, width, height, image):
         self.gameWindow = game_window
         self.xPos = center_x - width / 2
         self.yPos = center_y - height / 2
-        self.image = player_image
+        self.image = image
         self.hitbox = pygame.Rect(self.xPos, self.yPos, width, height)
 
     def draw(self):
@@ -67,18 +58,17 @@ class Player():
         # blit.overShirt
         # blit.hat?
 
-class Enemy(GameObject):
-    def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height, enemy_damage,
-                 enemy_speed, enemy_health, enemy_image):
-        super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
-        self.damage = enemy_damage
-        self.speed = enemy_speed
-        self.color = (randrange(255), 0, 0)
-        self.health = enemy_health
-        self.image = enemy_image
-        # self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
-        self.hitbox = self.image.get_rect()
 
+class Enemy(GameObject):
+    def __init__(self, game_window, x_pos, y_pos, width, height, damage,
+                 speed, health, image):
+        super().__init__(game_window, x_pos, y_pos, width, height)
+        self.damage = damage
+        self.speed = speed
+        self.color = (randrange(255), 0, 0)
+        self.health = health
+        self.image = image
+        self.hitbox = self.image.get_rect()
 
     def travel(self, center_x, center_y):
         angle = math.atan((center_y - self.yPos) / (center_x - self.xPos))
@@ -104,18 +94,16 @@ class Enemy(GameObject):
             self
 
 
-
-
 class Projectile(GameObject):
-    def __init__(self, game_window, x_pos, y_pos, cool_variable_width, cool_variable_height, projectile_damage,
-                 projectile_speed, mouse_x, mouse_y, cool_variable_angle):
-        super().__init__(game_window, x_pos, y_pos, cool_variable_width, cool_variable_height)
-        self.damage = projectile_damage
-        self.speed = projectile_speed
+    def __init__(self, game_window, x_pos, y_pos, width, height, damage,
+                 speed, mouse_x, mouse_y, angle):
+        super().__init__(game_window, x_pos, y_pos, width, height)
+        self.damage = damage
+        self.speed = speed
+        self.color = (255, randrange(150) + 105, 0)
         self.mouseX = mouse_x
         self.mouseY = mouse_y
-        self.angle = cool_variable_angle
-        self.color = (255, randrange(150)+105, 0)
+        self.angle = angle
         # self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
 
     def travel(self, center_x):

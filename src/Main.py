@@ -1,8 +1,7 @@
 
 # Import libraries
-from GameObjects import GameObject
 from GameObjects import Structure
-from GameObjects import HitBox
+from GameObjects import StructureHitBox
 from GameObjects import Player
 from GameObjects import Enemy
 from GameObjects import Projectile
@@ -44,14 +43,12 @@ spiller = pygame.transform.scale(spillermandhahasej, (100, 200))
 rygemonster = pygame.image.load('Graphics/Ryge_monster.png')
 fjende = pygame.transform.scale(rygemonster, (100, 100))
 
-calculatorForGameobjects = GameObject(gameWindow, 69, 69, 69, 69)
-
 graveyardStructureTing = Structure(gameWindow, 100, 100, 69, 69, graveyard)
 
-graveyardHitBox1 = HitBox(gameWindow, 100, 100, 100, 100, 'red', px)
-graveyardHitBox2 = HitBox(gameWindow, 200, 200, 90, 90, 'red', px)
-graveyardHitBox3 = HitBox(gameWindow, 300, 300, 70, 70, 'red', px)
-graveyardHitBox4 = HitBox(gameWindow, 400, 400, 40, 40, 'red', px)
+graveyardHitBox1 = StructureHitBox(gameWindow, 100, 100, 100, 100, 'red', px)
+graveyardHitBox2 = StructureHitBox(gameWindow, 200, 200, 90, 90, 'red', px)
+graveyardHitBox3 = StructureHitBox(gameWindow, 300, 300, 70, 70, 'red', px)
+graveyardHitBox4 = StructureHitBox(gameWindow, 400, 400, 40, 40, 'red', px)
 
 graveyardHitBoxes = [graveyardHitBox1, graveyardHitBox2, graveyardHitBox3, graveyardHitBox4]
 
