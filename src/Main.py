@@ -58,11 +58,13 @@ player_heigth = 200
 
 player = Player(gameWindow, centerX, centerY, player_width, player_heigth, spiller)
 
-spawnDelay = 10
+spawnDelay = 30
 attackDelay = 0
 
 willpowerPoints = 0
 willpowerLevel = 0
+
+temptationPoints = 0
 
 projectiles = []
 enemies = []
@@ -120,7 +122,6 @@ def display_mouse_coordinates():
 
 
 def willpower_bar(points, level, progress):
-
     points_display = font.render(f'-{points}/{progress}-', True, 'purple')
     level_display = font.render(f'-LEVEL({level})-', True, 'purple')
 
@@ -132,11 +133,26 @@ def willpower_bar(points, level, progress):
     gameWindow.blit(level_display, (1080, 666))
 
 
+def temptation_bar(points):
+    points_display = font.render(f'-{points}-', True, 'black')
+
+    pygame.draw.rect(gameWindow, 'black', (100, 50, 300, 50))
+    pygame.draw.rect(gameWindow, 'darkgrey', (110, 60, 280, 30))
+    try:
+        pygame.draw.rect(gameWindow, (255, 180 - 60 * points, 0), (110, 60, (points / 3) * 280, 30))
+    except ValueError:
+        pygame.draw.rect(gameWindow, (255, 0, 0), (110, 60, 280, 30))
+
+    gameWindow.blit(points_display, (115, 66))
+
+
 def enemy_attack(monster, player):
+    global temptationPoints
     if monster.hitbox.colliderect(player.hitbox):
         player_health = 25
         try:
             enemies.remove(monster)
+            temptationPoints += 1
         except ValueError:
             pass
 
@@ -247,7 +263,7 @@ while Running:
 
     spawnDelay -= 1
     if spawnDelay < 0:
-        spawnDelay = 10
+        spawnDelay = 30
 
     calculate_movement(movementSpeed)
 
@@ -290,6 +306,15 @@ while Running:
     if willpowerPoints >= level_progression:
         willpowerLevel += 1
         willpowerPoints = 0
+
+    temptation_bar(temptationPoints)
+
+    if temptationPoints > 3:
+        temptationPoints = 0
+        willpowerPoints = 0
+        willpowerLevel -= 3
+        if willpowerLevel < 0:
+            willpowerLevel = 0
 
     # Update game window
     pygame.display.flip()
