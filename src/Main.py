@@ -17,7 +17,7 @@ timer = pygame.time.Clock()
 # Set up game window
 screenWidth, screenHeight = pygame.display.Info().current_w, pygame.display.Info().current_h
 gameWindow = pygame.display.set_mode([screenWidth, screenHeight])
-pygame.display.set_caption('placeholder title')
+pygame.display.set_caption('Abstinence')
 
 # Define center coordinates
 centerX, centerY = screenWidth / 2, screenHeight / 2
@@ -27,10 +27,15 @@ print(screenHeight)
 print(centerY)
 
 # Define pixel size
-px = round(screenHeight / 200)
+# Format for new pixel size should be 320:180
+px = round(screenHeight / 180)
 
 # Load font
-font = pygame.font.Font('freesansbold.ttf', 20)
+font = pygame.font.Font('Graphics/DS-DIGIB.TTF', 20)
+font2 = pygame.font.Font('Graphics/DS-DIGIB.TTF', 50)
+font3 = pygame.font.Font('Graphics/LEDLIGHT.otf', 50)
+font4 = pygame.font.Font('Graphics/LEDLIGHT.otf', 52)
+
 
 # Load images
 graveyard = pygame.image.load('Graphics/graveyard.png')
@@ -42,6 +47,37 @@ spiller = pygame.transform.scale(spillermandhahasej, (100, 200))
 
 rygemonster = pygame.image.load('Graphics/Ryge_monster.png')
 fjende = pygame.transform.scale(rygemonster, (100, 100))
+
+unfittedHUD = pygame.image.load('Graphics/New Piskel-2.png (1).png')
+HUD = pygame.transform.scale(unfittedHUD, (screenWidth, screenHeight))
+
+unfittedSetbackFrame = pygame.image.load('Graphics/setback-1.png.png')
+setbackFrame = pygame.transform.scale(unfittedSetbackFrame, (screenWidth, screenHeight))
+
+unfittedFog1 = pygame.image.load('Graphics/fog-1.png.png')
+fog1TopLeft = pygame.transform.scale(unfittedFog1, (screenWidth, screenHeight))
+fog1TopRight = pygame.transform.flip(fog1TopLeft, True, False)
+fog1BottomLeft = pygame.transform.flip(fog1TopLeft, False, True)
+fog1BottomRight = pygame.transform.flip(fog1TopLeft, True, True)
+
+unfittedFog2 = pygame.image.load('Graphics/fog-2.png.png')
+fog2TopLeft = pygame.transform.scale(unfittedFog2, (screenWidth, screenHeight))
+fog2TopRight = pygame.transform.flip(fog2TopLeft, True, False)
+fog2BottomLeft = pygame.transform.flip(fog2TopLeft, False, True)
+fog2BottomRight = pygame.transform.flip(fog2TopLeft, True, True)
+
+unfittedFog3 = pygame.image.load('Graphics/fog-3.png.png')
+fog3TopLeft = pygame.transform.scale(unfittedFog3, (screenWidth, screenHeight))
+fog3TopRight = pygame.transform.flip(fog3TopLeft, True, False)
+fog3BottomLeft = pygame.transform.flip(fog3TopLeft, False, True)
+fog3BottomRight = pygame.transform.flip(fog3TopLeft, True, True)
+
+fogTopLeft = [fog1TopLeft, fog2TopLeft, fog3TopLeft]
+fogTopRight = [fog1TopRight, fog2TopRight, fog3TopRight]
+fogBottomLeft = [fog1BottomLeft, fog2BottomLeft, fog3BottomLeft]
+fogBottomRight = [fog1BottomRight, fog2BottomRight, fog3BottomRight]
+
+
 
 graveyardStructureTing = Structure(gameWindow, 100, 100, 69, 69, graveyard)
 
@@ -60,6 +96,8 @@ player = Player(gameWindow, centerX, centerY, player_width, player_heigth, spill
 
 spawnDelay = 30
 attackDelay = 0
+graphicsDelay = 0
+
 
 willpowerPoints = 0
 willpowerLevel = 0
@@ -68,6 +106,8 @@ temptationPoints = 0
 
 projectiles = []
 enemies = []
+
+startTime = None
 
 
 '''
@@ -122,28 +162,48 @@ def display_mouse_coordinates():
 
 
 def willpower_bar(points, level, progress):
-    points_display = font.render(f'-{points}/{progress}-', True, 'purple')
-    level_display = font.render(f'-LEVEL({level})-', True, 'purple')
+    points_display = font.render(f'{points}/{progress}', True, 'purple')
+    level_display = font.render(f'LEVEL {level}', True, 'purple')
 
-    pygame.draw.rect(gameWindow, 'black', (100, 650, 1100, 50))
-    pygame.draw.rect(gameWindow, 'darkgrey', (110, 660, 1080, 30))
-    pygame.draw.rect(gameWindow, 'yellow', (110, 660, (points / progress) * 1080, 30))
+    pygame.draw.rect(gameWindow, 'yellow', (40 * px, 172 * px, (points / progress) * 240 * px, 5 * px))
 
-    gameWindow.blit(points_display, (115, 666))
-    gameWindow.blit(level_display, (1080, 666))
+    gameWindow.blit(points_display, (41 * px, 172.2 * px))
+    gameWindow.blit(level_display, (262 * px, 172.2 * px))
 
 
-def temptation_bar(points):
-    points_display = font.render(f'-{points}-', True, 'black')
+def temptation_graphics(points):
+    global graphicsDelay
 
-    pygame.draw.rect(gameWindow, 'black', (100, 50, 300, 50))
-    pygame.draw.rect(gameWindow, 'darkgrey', (110, 60, 280, 30))
     try:
-        pygame.draw.rect(gameWindow, (255, 180 - 60 * points, 0), (110, 60, (points / 3) * 280, 30))
+        pygame.draw.rect(gameWindow, (205 + 0.5 * points, 180 - 1.8 * points, 0), (261 * px, 3 * px, (points / 100) * 50 * px, 5 * px))
     except ValueError:
-        pygame.draw.rect(gameWindow, (255, 0, 0), (110, 60, 280, 30))
+        pygame.draw.rect(gameWindow, (255, 0, 0), (261 * px, 3 * px, 50 * px, 5 * px))
 
-    gameWindow.blit(points_display, (115, 66))
+    points_display = font.render(f'{points}', True, (29, 29, 29))
+    gameWindow.blit(points_display, (262 * px, 3.2 * px))
+
+    if graphicsDelay <= 0:
+        try:
+            pygame.draw.rect(gameWindow, (255 / 100 * points, 0, 0), (314 * px, 5 * px, 1 * px, 1 * px))
+            pygame.draw.rect(gameWindow, (255 / 100 * points, 0, 0), (316 * px, 5 * px, 1 * px, 1 * px))
+        except ValueError:
+            pygame.draw.rect(gameWindow, (255, 0, 0), (314 * px, 5 * px, 1 * px, 1 * px))
+            pygame.draw.rect(gameWindow, (255, 0, 0), (316 * px, 5 * px, 1 * px, 1 * px))
+
+    if graphicsDelay <= -105 + points:
+        graphicsDelay = 105 - points
+
+
+def fog(points):
+    global fogTopLeft, fogTopRight, fogBottomLeft, fogBottomRight
+
+    gameWindow.blit(fogTopLeft[randrange(0, 3)], (-120 * px + 1.2 * points * px, -90 * px + 0.9 * points * px))
+    gameWindow.blit(fogTopRight[randrange(0, 3)], (120 * px - 1.2 * points * px, -90 * px + 0.9 * points * px))
+    gameWindow.blit(fogBottomLeft[randrange(0, 3)], (-120 * px + 1.2 * points * px, 90 * px - 0.9 * points * px))
+    gameWindow.blit(fogBottomRight[randrange(0, 3)], (120 * px - 1.2 * points * px, 90 * px - 0.9 * points * px))
+
+
+
 
 
 def enemy_attack(monster, player):
@@ -152,7 +212,7 @@ def enemy_attack(monster, player):
         player_health = 25
         try:
             enemies.remove(monster)
-            temptationPoints += 1
+            temptationPoints += 10
         except ValueError:
             pass
 
@@ -164,6 +224,7 @@ def enemy_attack(monster, player):
 Customise = True
 Running = True
 Spawning = True
+Setback = False
 
 
 while Customise:
@@ -196,7 +257,7 @@ while Customise:
 while Running:
     timer.tick(fps)
 
-    movementSpeed = 4
+    movementSpeed = 5 - temptationPoints / 30
     w_moved = 0
     a_moved = 0
     s_moved = 0
@@ -299,7 +360,11 @@ while Running:
         monster.travel(centerX, centerY)
         monster.draw()
 
+    fog(temptationPoints)
+
     display_mouse_coordinates()
+
+    gameWindow.blit(HUD, (0, 0))
 
     level_progression = 10 + willpowerLevel * 5
     willpower_bar(willpowerPoints, willpowerLevel, level_progression)
@@ -307,14 +372,68 @@ while Running:
         willpowerLevel += 1
         willpowerPoints = 0
 
-    temptation_bar(temptationPoints)
+    temptation_graphics(temptationPoints)
 
-    if temptationPoints > 3:
+    if temptationPoints >= 100:
+
+        enemies.clear()
+
+        startTime = pygame.time.get_ticks()
+        Setback = True
+
+        while Setback:
+
+            # Check for pygame events
+            for event in pygame.event.get():
+
+                # Check for keys pressed
+                if event.type == pygame.KEYDOWN:
+
+                    # Close game if escape key is pressed
+                    if event.key == pygame.K_ESCAPE:
+                        Setback = False
+                        Running = False
+
+                    elif event.key == pygame.K_SPACE:
+                        Setback = False
+
+                # Close game if the game windows close button is pressed
+                elif event.type == pygame.QUIT:
+                    Setback = False
+                    Running = False
+
+            gameWindow.blit(setbackFrame, (0, 0))
+            timeSinceSetback = pygame.time.get_ticks() - startTime
+            setbackText3 = font4.render('get smoked', True, 'black')
+            setbackText = font3.render('get smoked', True, 'red')
+            setbackText2 = font3.render('time', True, 'black')
+            setbackTimer = font2.render(f'{10000 - timeSinceSetback}', True, 'red')
+            gameWindow.blit(setbackText3, (118 * px, 75 * px))
+            gameWindow.blit(setbackText, (120 * px, 75 * px))
+            gameWindow.blit(setbackText2, (120 * px, 95 * px))
+            gameWindow.blit(setbackTimer, (125 * px, 100 * px))
+
+            if timeSinceSetback >= 10000:
+                Setback = False
+
+            # Update game window
+            pygame.display.flip()
+
         temptationPoints = 0
         willpowerPoints = 0
         willpowerLevel -= 3
         if willpowerLevel < 0:
             willpowerLevel = 0
+
+
+    '''
+        if startTime:
+        timeSinceSetback = pygame.time.get_ticks() - startTime
+        setbackTimer = font.render(f'time left: {timeSinceSetback}', True, 'purple')
+        gameWindow.blit(setbackTimer, (100 * px, 100 * px))
+    '''
+
+    graphicsDelay -= 1
 
     # Update game window
     pygame.display.flip()
