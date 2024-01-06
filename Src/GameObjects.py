@@ -28,14 +28,24 @@ class Structure(GameObject):
 
 class StructureHitBox(GameObject):
     def __init__(self, game_window, x_pos, y_pos, width, height, color,
-                 border_thickness):
+                 thickness):
         super().__init__(game_window, x_pos, y_pos, width, height)
         self.color = color
-        self.thickness = border_thickness
+        self.thickness = thickness
+        self.hitbox = pygame.Rect(self.xPos, self.yPos, width, height)
+
+    def move(self, w_moved, a_moved, s_moved, d_moved):
+        # Movement in all directions is added up
+        self.xPos += a_moved + d_moved
+        self.yPos += w_moved + s_moved
+        self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
+
 
     def draw(self):
-        pygame.draw.rect(self.gameWindow, self.color, pygame.Rect(self.xPos, self.yPos, self.width, self.height),
-                         self.thickness)
+        # Updating hitbox position
+        self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
+        pygame.draw.rect(self.gameWindow, self.color, self.hitbox, self.thickness)
+
 
 
 class Player():
@@ -46,9 +56,9 @@ class Player():
         self.image = image
         self.hitbox = pygame.Rect(self.xPos, self.yPos, width, height)
 
-    def draw(self):
-        self.gameWindow.blit(self.image, self.hitbox)
-        pygame.draw.rect(self.gameWindow, 'blue', self.hitbox, 2)
+    def draw(self, px):
+        self.gameWindow.blit(self.image, (145 * px, 76 * px))
+        pygame.draw.rect(self.gameWindow, 'blue', self.hitbox, 1)
 
         # blit.shoes
         # blit.shirt
@@ -68,7 +78,7 @@ class Enemy(GameObject):
         self.color = (randrange(255), 0, 0)
         self.health = health
         self.image = image
-        self.hitbox = self.image.get_rect()
+        self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
 
     def travel(self, center_x, center_y):
         angle = math.atan((center_y - self.yPos) / (center_x - self.xPos))
@@ -84,9 +94,11 @@ class Enemy(GameObject):
         # Updating hitbox
         self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
 
-    def draw(self):
-        # pygame.draw.rect(self.gameWindow, self.color, self.hitbox, 2)
-        self.gameWindow.blit(self.image, self.hitbox)
+    def draw(self,center_x, center_y):
+        if self.xPos < center_x:
+            self.gameWindow.blit(self.image[0], self.hitbox)
+        else:
+            self.gameWindow.blit(self.image[1], self.hitbox)
         pygame.draw.rect(self.gameWindow, 'red', self.hitbox, 2)
 
     def attack(self):
