@@ -258,7 +258,10 @@ player_heigth = 24 * px
 
 player = Player(gameWindow, centerX, centerY, player_width, player_heigth, spiller)
 
-spawnDelay = 10
+spawn_x = 0
+spawn_y = 0
+
+spawnDelay = 0
 attackDelay = 0
 graphicsDelay = 0
 
@@ -271,7 +274,10 @@ temptationPoints = 0
 projectiles = []
 enemies = []
 
+Spawning = False
+
 startTime = None
+
 
 
 ###############################################################################################################
@@ -322,7 +328,7 @@ def calculate_movement(movement_speed):
 
 
 def display_mouse_coordinates():
-    mouse_coordinates = font.render(f'coordinates: {mousePosition[0]} ; {mousePosition[1]}', True, 'red')
+    mouse_coordinates = font.render(f'coordinates: {mousePosition[0]} ; {mousePosition[1]} {len(enemies)}', True, 'red')
     gameWindow.blit(mouse_coordinates, (mousePosition[0], mousePosition[1]))
 
 
@@ -387,6 +393,27 @@ def check_collisions(structure, player):
             d_moved = 0
 
 
+def spawn_enemy():
+    global spawn_x, spawn_y
+    Spawning = False
+    enemyType = randrange(0, 100)
+    while not Spawning:
+        spawn_x = randrange(screenWidth * 3) - screenWidth
+        spawn_y = randrange(screenHeight * 3) - screenHeight
+        if spawn_x < - 20 * px or spawn_x > screenWidth + 20 * px or spawn_y < - 20 * px or spawn_y > screenWidth + 20 * px:
+            Spawning = True
+
+    if enemyType < 85 - 10 * willpowerLevel:
+        monster = Enemy(gameWindow, spawn_x, spawn_y, 23 * px, 23 * px, 7, 1 * px, 2, abstinence1)
+    else:
+        monster = Enemy(gameWindow, spawn_x, spawn_y, 52 * px, 26 * px, 15, 2 * px, 3, abstinence2)
+    enemies.append(monster)
+
+
+def despawn_enemy(monster):
+    if monster.xPos < - screenWidth or monster.xPos > 2 * screenWidth or monster.yPos < - screenHeight or monster.yPos > screenHeight * 2:
+        enemies.remove(monster)
+
 
 def enemy_attack(monster, player):
     global temptationPoints
@@ -403,7 +430,6 @@ def enemy_attack(monster, player):
 
 TitleScreen = True
 Running = True
-Spawning = True
 Setback = False
 
 
@@ -509,8 +535,6 @@ while Running:
 
     projectileSpeed = 6 * px
 
-    spawn_x = randrange(screenWidth)
-    spawn_y = randrange(screenHeight)
     # make projectilespeed inside clasSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
     mousePosition = pygame.mouse.get_pos()
     leftClick = pygame.mouse.get_pressed()[0]
@@ -534,46 +558,24 @@ while Running:
 
     if leftClick:
         if attackDelay <= 0:
-            attackDelay = 5
+            attackDelay = 10 - willpowerLevel
             try:
                 angle = (math.atan((mousePosition[1] - centerY) / (mousePosition[0] - centerX)))
             except ZeroDivisionError:
                 angle = 1.57079633
 
-            '''
-            if mousePosition[0] == centerX:
-                angle = 1.57079633
-            elif mousePosition[0] == centerX and mousePosition[1] < centerY:
-                angle = 4.71238898
-            else:
-                angle = (math.atan((mousePosition[1] - centerY) / (mousePosition[0] - centerX)))
-    
-            
-            '''
             shot = Projectile(gameWindow, centerX, centerY, 69, 69, 420, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle)
-
-            print(f'mouseX({mousePosition[0]}) - centerX({centerX}) = {mousePosition[0] - centerX}')
-            print(f'mouseY({screenHeight - mousePosition[1]}) - centerY({centerY}) = {(screenHeight - mousePosition[1]) - centerY}')
-            print(f'angle between these is arctan({(screenHeight - mousePosition[1]) - centerY} / {mousePosition[0] - centerX}) = {shot.angle}')
-            # print(f'x-direction = {shot.xDirectionzzz} and y-direction = {shot.yDirectionzzz}')
             projectiles.append(shot)
 
             pygame.mixer.Sound.play(shootSound)
 
     attackDelay -= 1
 
-    if Spawning:
-        if spawnDelay == 0:
-            enemyType = randrange(0, 100)
-            if enemyType < 66:
-                monster = Enemy(gameWindow, spawn_x, spawn_y, 23 * px, 23 * px, 7, 1 * px, 2, abstinence1)
-            else:
-                monster = Enemy(gameWindow, spawn_x, spawn_y, 52 * px, 26 * px, 15, 2 * px, 3, abstinence2)
-            enemies.append(monster)
-
+    if spawnDelay == 0:
+        spawn_enemy()
     spawnDelay -= 1
     if spawnDelay < 0:
-        spawnDelay = 10
+        spawnDelay = 15 - willpowerLevel
 
     calculate_movement(movementSpeed)
 
@@ -595,12 +597,14 @@ while Running:
 
                 try:
                     monster.health -= 1
-                    projectiles.remove(attack)
+                    attack.pierce -= 1
                     pygame.mixer.Sound.play(enemyHitSound)
 
                 except ValueError:
                     pass
 
+        if attack.pierce == 0:
+            projectiles.remove(attack)
         attack.move(w_moved, a_moved, s_moved, d_moved)
         attack.travel(centerX)
         attack.draw()
@@ -613,6 +617,7 @@ while Running:
         enemy_attack(monster, player)
         monster.move(w_moved, a_moved, s_moved, d_moved)
         monster.travel(centerX, centerY)
+        despawn_enemy(monster)
         monster.draw(centerX, centerY)
 
     for structure in graveyardHitBoxes:

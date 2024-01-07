@@ -101,10 +101,6 @@ class Enemy(GameObject):
             self.gameWindow.blit(self.image[1], self.hitbox)
         pygame.draw.rect(self.gameWindow, 'red', self.hitbox, 2)
 
-    def attack(self):
-        if self.hitbox.colliderect(self.playerHitbox):
-            self
-
 
 class Projectile(GameObject):
     def __init__(self, game_window, x_pos, y_pos, width, height, damage,
@@ -116,6 +112,7 @@ class Projectile(GameObject):
         self.mouseX = mouse_x
         self.mouseY = mouse_y
         self.angle = angle
+        self.pierce = 1
         # self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
 
     def travel(self, center_x):
