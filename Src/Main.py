@@ -362,7 +362,7 @@ def temptation_graphics(points):
         temptation_title = font5.render(f'Temptation', True, (255, 0, 0))
         gameWindow.blit(temptation_title, (262 * px, 8 * px))
 
-    points_display = font.render(f'{points}', True, (29, 29, 29))
+    points_display = font.render(f'{math.floor(points)}', True, (29, 29, 29))
     gameWindow.blit(points_display, (262 * px, 3.2 * px))
 
     if graphicsDelay <= 0:
@@ -373,8 +373,8 @@ def temptation_graphics(points):
             pygame.draw.rect(gameWindow, (255, 0, 0), (314 * px, 5 * px, 1 * px, 1 * px))
             pygame.draw.rect(gameWindow, (255, 0, 0), (316 * px, 5 * px, 1 * px, 1 * px))
 
-    if graphicsDelay <= -105 + points:
-        graphicsDelay = 105 - points
+    if graphicsDelay <= -101 + points:
+        graphicsDelay = 101 - points
 
 
 def fog(points):
@@ -411,7 +411,7 @@ def spawn_enemy():
         if spawn_x < - 20 * px or spawn_x > screenWidth + 20 * px or spawn_y < - 20 * px or spawn_y > screenWidth + 20 * px:
             Spawning = True
 
-    if enemyType < 85 - 10 * willpowerLevel:
+    if enemyType < 100 - 10 * willpowerLevel:
         monster = Enemy(gameWindow, spawn_x, spawn_y, 23 * px, 23 * px, 7, 1 * px, 2, abstinence1)
     else:
         monster = Enemy(gameWindow, spawn_x, spawn_y, 52 * px, 26 * px, 15, 2 * px, 3, abstinence2)
@@ -706,7 +706,11 @@ while Running:
             Regenerating = True
 
     if Regenerating:
-        temptationPoints -= math.floor(timeSinceTemptation * timeSinceTemptation / 100000000)
+        regenParameter = timeSinceTemptation / 1000 - 10
+        temptationPoints -= (regenParameter * regenParameter) / 50
+        print((regenParameter * regenParameter) / 50)
+
+
 
     if temptationPoints < 0:
         Regenerating = False
