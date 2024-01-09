@@ -13,7 +13,7 @@ pygame.init()
 mixer.init()
 
 # Set frames per second
-fps = 10
+fps = 20
 timer = pygame.time.Clock()
 
 # Set up game window
@@ -39,12 +39,15 @@ px = round(screenHeight / 180)
 ###   ########   ###   ###   ###   ###   ###   #########   #########   ###   ###         ######   ############   ###
 ###        ###         ###   ###   ###      ############   #########         ###   ###   ######   ######         ###
 ####################################################################################################################
+
 # Load fonts
+
 font = pygame.font.Font('Graphics/DS-DIGIB.TTF', 20)
 font2 = pygame.font.Font('Graphics/DS-DIGIB.TTF', 50)
 font3 = pygame.font.Font('Graphics/LEDLIGHT.otf', 50)
 font4 = pygame.font.Font('Graphics/LEDLIGHT.otf', 52)
 font5 = pygame.font.Font('Graphics/LEDLIGHT.otf', 20)
+
 
 ################################################################################################################################
 ###   ########         ###         ###      ############         ###         ###   ###   ###   ###   ###      ######         ###
@@ -86,6 +89,7 @@ mixer.music.set_volume(0.7)
 ################################################################################################################################
 
 # Load images
+
 graveyard = pygame.image.load('Graphics/graveyard.png')
 graveyard = pygame.transform.scale(graveyard, (100 * px, 100 * px))
 graveyardRect = graveyard.get_rect()
@@ -276,7 +280,11 @@ enemies = []
 
 Spawning = False
 
-startTime = None
+setbackTime = None
+
+Regenerating = False
+
+temptationTime = None
 
 
 
@@ -416,11 +424,13 @@ def despawn_enemy(monster):
 
 
 def enemy_attack(monster, player):
-    global temptationPoints
+    global temptationPoints, Regenerating, temptationTime
     if monster.hitbox.colliderect(player.hitbox):
         try:
             enemies.remove(monster)
             temptationPoints += monster.damage
+            Regenerating = False
+            temptationTime = pygame.time.get_ticks()
             pygame.mixer.Sound.play(playerHitSound)
         except ValueError:
             pass
@@ -434,7 +444,7 @@ Setback = False
 
 
 for count in range(33):
-    timer.tick(fps)
+    timer.tick(15)
     gameWindow.blit(intro[count], (0, 0))
     # Update game window
     pygame.display.flip()
@@ -643,7 +653,7 @@ while Running:
 
         enemies.clear()
 
-        startTime = pygame.time.get_ticks()
+        setbackTime = pygame.time.get_ticks()
         Setback = True
 
         while Setback:
@@ -668,7 +678,7 @@ while Running:
                     Running = False
 
             gameWindow.blit(setbackFrame, (0, 0))
-            timeSinceSetback = pygame.time.get_ticks() - startTime
+            timeSinceSetback = pygame.time.get_ticks() - setbackTime
             setbackText3 = font4.render('get smoked', True, 'black')
             setbackText = font3.render('get smoked', True, 'red')
             setbackText2 = font3.render('time', True, 'black')
@@ -690,13 +700,18 @@ while Running:
         if willpowerLevel < 0:
             willpowerLevel = 0
 
+    if temptationPoints > 0:
+        timeSinceTemptation = pygame.time.get_ticks() - temptationTime
+        if timeSinceTemptation > 10000:
+            Regenerating = True
 
-    '''
-        if startTime:
-        timeSinceSetback = pygame.time.get_ticks() - startTime
-        setbackTimer = font.render(f'time left: {timeSinceSetback}', True, 'purple')
-        gameWindow.blit(setbackTimer, (100 * px, 100 * px))
-    '''
+    if Regenerating:
+        temptationPoints -= math.floor(timeSinceTemptation * timeSinceTemptation / 100000000)
+
+    if temptationPoints < 0:
+        Regenerating = False
+        temptationPoints = 0
+
 
     graphicsDelay -= 1
 
