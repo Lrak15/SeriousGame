@@ -77,6 +77,7 @@ class Enemy(GameObject):
         self.speed = speed
         self.color = (randrange(255), 0, 0)
         self.health = health
+        self.initialHealth = health
         self.image = image
         self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
 
@@ -94,26 +95,29 @@ class Enemy(GameObject):
         # Updating hitbox
         self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
 
-    def draw(self,center_x, center_y):
+    def draw(self,center_x, px):
         if self.xPos < center_x:
             self.gameWindow.blit(self.image[0], self.hitbox)
         else:
             self.gameWindow.blit(self.image[1], self.hitbox)
         pygame.draw.rect(self.gameWindow, 'red', self.hitbox, 2)
 
+        pygame.draw.rect(self.gameWindow, 'red', pygame.Rect(self.xPos, self.yPos - 4 * px, self.width / self.initialHealth * self.health, 2 * px))
 
 class Projectile(GameObject):
     def __init__(self, game_window, x_pos, y_pos, width, height, damage,
-                 speed, mouse_x, mouse_y, angle):
+                 speed, mouse_x, mouse_y, angle, image):
         super().__init__(game_window, x_pos, y_pos, width, height)
         self.damage = damage
         self.speed = speed
-        self.color = (255, randrange(150) + 105, 0)
+        self.color = (0, randrange(150) + 105, 255)
         self.mouseX = mouse_x
         self.mouseY = mouse_y
         self.angle = angle
         self.pierce = 1
         # self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
+        self.image = image
+        self.hitbox = self.image.get_rect()
 
     def travel(self, center_x):
         if self.mouseX > center_x:
@@ -127,11 +131,16 @@ class Projectile(GameObject):
             # self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
 
     def draw(self):
-        # pygame.draw.rect(self.gameWindow, self.color, self.hitbox)
-
+        '''
         if self.xPos > -1:
 
             pygame.draw.circle(self.gameWindow, self.color, (self.xPos, self.yPos), 10)
+        '''
+        self.hitbox.center = (self.xPos, self.yPos)
+        # pygame.draw.rect(self.gameWindow, self.color, self.hitbox)
+
+        self.gameWindow.blit(self.image, self.hitbox)
+
 
 
 

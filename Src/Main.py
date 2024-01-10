@@ -42,11 +42,10 @@ px = round(screenHeight / 180)
 
 # Load fonts
 
-font = pygame.font.Font('Graphics/DS-DIGIB.TTF', 20)
-font2 = pygame.font.Font('Graphics/DS-DIGIB.TTF', 50)
-font3 = pygame.font.Font('Graphics/LEDLIGHT.otf', 50)
-font4 = pygame.font.Font('Graphics/LEDLIGHT.otf', 52)
-font5 = pygame.font.Font('Graphics/LEDLIGHT.otf', 20)
+font = pygame.font.Font('Graphics/DS-DIGIB.TTF', 5 * px)
+font2 = pygame.font.Font('Graphics/DS-DIGIB.TTF', 10 * px)
+font3 = pygame.font.Font('Graphics/LEDLIGHT.otf', 10 * px)
+font4 = pygame.font.Font('Graphics/LEDLIGHT.otf', 5 * px)
 
 
 ################################################################################################################################
@@ -107,7 +106,7 @@ abstinence2_R = pygame.transform.scale(abstinence2_R, (52 * px, 26 * px))
 abstinence2_L = pygame.transform.flip(abstinence2_R, True, False)
 abstinence2 = [abstinence2_R, abstinence2_L]
 
-HUD = pygame.image.load('Graphics/New Piskel-2.png (1).png')
+HUD = pygame.image.load('Graphics/hud-2.png.png')
 HUD = pygame.transform.scale(HUD, (screenWidth, screenHeight))
 
 setbackFrame = pygame.image.load('Graphics/setback-1.png.png')
@@ -140,74 +139,12 @@ park = pygame.image.load('Graphics/image.png')
 park = pygame.transform.scale(park, (250 * px, 200 * px))
 parkRect = park.get_rect()
 
-intro1 = pygame.image.load('Graphics/Abstinence title screen-1.png.png')
-intro1 = pygame.transform.scale(intro1, (screenWidth, screenWidth))
-intro2 = pygame.image.load('Graphics/Abstinence title screen-2.png.png')
-intro2 = pygame.transform.scale(intro2, (screenWidth, screenWidth))
-intro3 = pygame.image.load('Graphics/Abstinence title screen-3.png.png')
-intro3 = pygame.transform.scale(intro3, (screenWidth, screenWidth))
-intro4 = pygame.image.load('Graphics/Abstinence title screen-4.png.png')
-intro4 = pygame.transform.scale(intro4, (screenWidth, screenWidth))
-intro5 = pygame.image.load('Graphics/Abstinence title screen-5.png.png')
-intro5 = pygame.transform.scale(intro5, (screenWidth, screenWidth))
-intro6 = pygame.image.load('Graphics/Abstinence title screen-6.png.png')
-intro6 = pygame.transform.scale(intro6, (screenWidth, screenWidth))
-intro7 = pygame.image.load('Graphics/Abstinence title screen-7.png.png')
-intro7 = pygame.transform.scale(intro7, (screenWidth, screenWidth))
-intro8 = pygame.image.load('Graphics/Abstinence title screen-8.png.png')
-intro8 = pygame.transform.scale(intro8, (screenWidth, screenWidth))
-intro9 = pygame.image.load('Graphics/Abstinence title screen-9.png.png')
-intro9 = pygame.transform.scale(intro9, (screenWidth, screenWidth))
-intro10 = pygame.image.load('Graphics/Abstinence title screen-10.png.png')
-intro10 = pygame.transform.scale(intro10, (screenWidth, screenWidth))
-intro11 = pygame.image.load('Graphics/Abstinence title screen-11.png.png')
-intro11 = pygame.transform.scale(intro11, (screenWidth, screenWidth))
-intro12 = pygame.image.load('Graphics/Abstinence title screen-12.png.png')
-intro12 = pygame.transform.scale(intro12, (screenWidth, screenWidth))
-intro13 = pygame.image.load('Graphics/Abstinence title screen-13.png.png')
-intro13 = pygame.transform.scale(intro13, (screenWidth, screenWidth))
-intro14 = pygame.image.load('Graphics/Abstinence title screen-14.png.png')
-intro14 = pygame.transform.scale(intro14, (screenWidth, screenWidth))
-intro15 = pygame.image.load('Graphics/Abstinence title screen-15.png.png')
-intro15 = pygame.transform.scale(intro15, (screenWidth, screenWidth))
-intro16 = pygame.image.load('Graphics/Abstinence title screen-16.png.png')
-intro16 = pygame.transform.scale(intro16, (screenWidth, screenWidth))
-intro17 = pygame.image.load('Graphics/Abstinence title screen-17.png.png')
-intro17 = pygame.transform.scale(intro17, (screenWidth, screenWidth))
-intro18 = pygame.image.load('Graphics/Abstinence title screen-18.png.png')
-intro18 = pygame.transform.scale(intro18, (screenWidth, screenWidth))
-intro19 = pygame.image.load('Graphics/Abstinence title screen-19.png.png')
-intro19 = pygame.transform.scale(intro19, (screenWidth, screenWidth))
-intro20 = pygame.image.load('Graphics/Abstinence title screen-20.png.png')
-intro20 = pygame.transform.scale(intro20, (screenWidth, screenWidth))
-intro21 = pygame.image.load('Graphics/Abstinence title screen-21.png.png')
-intro21 = pygame.transform.scale(intro21, (screenWidth, screenWidth))
-intro22 = pygame.image.load('Graphics/Abstinence title screen-22.png.png')
-intro22 = pygame.transform.scale(intro22, (screenWidth, screenWidth))
-intro23 = pygame.image.load('Graphics/Abstinence title screen-23.png.png')
-intro23 = pygame.transform.scale(intro23, (screenWidth, screenWidth))
-intro24 = pygame.image.load('Graphics/Abstinence title screen-24.png.png')
-intro24 = pygame.transform.scale(intro24, (screenWidth, screenWidth))
-intro25 = pygame.image.load('Graphics/Abstinence title screen-25.png.png')
-intro25 = pygame.transform.scale(intro25, (screenWidth, screenWidth))
-intro26 = pygame.image.load('Graphics/Abstinence title screen-26.png.png')
-intro26 = pygame.transform.scale(intro26, (screenWidth, screenWidth))
-intro27 = pygame.image.load('Graphics/Abstinence title screen-27.png.png')
-intro27 = pygame.transform.scale(intro27, (screenWidth, screenWidth))
-intro28 = pygame.image.load('Graphics/Abstinence title screen-28.png.png')
-intro28 = pygame.transform.scale(intro28, (screenWidth, screenWidth))
-intro29 = pygame.image.load('Graphics/Abstinence title screen-29.png.png')
-intro29 = pygame.transform.scale(intro29, (screenWidth, screenWidth))
-intro30 = pygame.image.load('Graphics/Abstinence title screen-30.png.png')
-intro30 = pygame.transform.scale(intro30, (screenWidth, screenWidth))
-intro31 = pygame.image.load('Graphics/Abstinence title screen-31.png.png')
-intro31 = pygame.transform.scale(intro31, (screenWidth, screenWidth))
-intro32 = pygame.image.load('Graphics/Abstinence title screen-32.png.png')
-intro32 = pygame.transform.scale(intro32, (screenWidth, screenWidth))
-intro33 = pygame.image.load('Graphics/Abstinence title screen-33.png.png')
-intro33 = pygame.transform.scale(intro33, (screenWidth, screenWidth))
-
-intro = [intro1, intro2, intro3, intro4, intro5, intro6, intro7, intro8, intro9, intro10, intro11, intro12, intro13, intro14, intro15, intro16, intro17, intro18, intro19, intro20, intro21, intro22, intro23, intro24, intro25, intro26, intro27, intro28, intro29, intro30, intro31, intro32, intro33]
+introImages = []
+imageCount = 33
+for i in range(1, imageCount + 1):
+    image = pygame.image.load(f'Graphics/Abstinence title screen-{i}.png.png')
+    image = pygame.transform.scale(image, (screenWidth, screenWidth))
+    introImages.append(image)
 
 titleScreen = pygame.image.load('Graphics/Abstinence title screen-34.png.png')
 titleScreen = pygame.transform.scale(titleScreen, (screenWidth, screenWidth))
@@ -222,6 +159,12 @@ titleButton3 = pygame.image.load('Graphics/title buttons-4.png.png')
 titleButton3 = pygame.transform.scale(titleButton3, (screenWidth, screenWidth / 24))
 titleButton4 = pygame.image.load('Graphics/title buttons-5.png.png')
 titleButton4 = pygame.transform.scale(titleButton4, (screenWidth, screenWidth / 24))
+
+primaryProjectile = pygame.image.load('Graphics/Projectiles-1.png.png')
+primaryProjectile = pygame.transform.scale(primaryProjectile, (7 * px, 7 * px))
+
+secondaryProjectile = pygame.image.load('Graphics/Projectiles-2.png.png')
+secondaryProjectile = pygame.transform.scale(secondaryProjectile, (3 * px, 3 * px))
 
 
 #######################################################################################
@@ -274,6 +217,8 @@ willpowerPoints = 0
 willpowerLevel = 0
 
 temptationPoints = 0
+
+upgradePoints = 5
 
 projectiles = []
 enemies = []
@@ -346,8 +291,8 @@ def willpower_bar(points, level, progress):
 
     pygame.draw.rect(gameWindow, 'yellow', (40 * px, 172 * px, (points / progress) * 240 * px, 5 * px))
 
-    gameWindow.blit(points_display, (41 * px, 172.2 * px))
-    gameWindow.blit(level_display, (262 * px, 172.2 * px))
+    gameWindow.blit(points_display, (41 * px, 172 * px))
+    gameWindow.blit(level_display, (262 * px, 172 * px))
 
 
 def temptation_graphics(points):
@@ -355,15 +300,12 @@ def temptation_graphics(points):
 
     try:
         pygame.draw.rect(gameWindow, (205 + 0.5 * points, 180 - 1.8 * points, 0), (261 * px, 3 * px, (points / 100) * 50 * px, 5 * px))
-        temptation_title = font5.render(f'Temptation', True, (205 + 0.5 * points, 180 - 1.8 * points, 0))
-        gameWindow.blit(temptation_title, (262 * px, 8 * px))
     except ValueError:
         pygame.draw.rect(gameWindow, (255, 0, 0), (261 * px, 3 * px, 50 * px, 5 * px))
-        temptation_title = font5.render(f'Temptation', True, (255, 0, 0))
-        gameWindow.blit(temptation_title, (262 * px, 8 * px))
+
 
     points_display = font.render(f'{math.floor(points)}', True, (29, 29, 29))
-    gameWindow.blit(points_display, (262 * px, 3.2 * px))
+    gameWindow.blit(points_display, (262 * px, 3 * px))
 
     if graphicsDelay <= 0:
         try:
@@ -375,6 +317,24 @@ def temptation_graphics(points):
 
     if graphicsDelay <= -101 + points:
         graphicsDelay = 101 - points
+
+
+def HUD_graphics(upgradePoints):
+    upgrade_title_1 = font.render(f'Willpower', True, ('green'))
+    upgrade_title_2 = font.render(f'Points: {upgradePoints}', True, ('green'))
+
+    gameWindow.blit(upgrade_title_1, (4 * px, 140 * px))
+    gameWindow.blit(upgrade_title_2, (4 * px, 144 * px))
+
+    upgrade_text_1 = font.render(f'1: att speed', True, ('green'))
+    upgrade_text_2 = font.render(f'2: mov speed', True, ('green'))
+    upgrade_text_3 = font.render(f'3: resistance', True, ('green'))
+    upgrade_text_4 = font.render(f'4: projectiles', True, ('green'))
+
+    gameWindow.blit(upgrade_text_1, (4 * px, 154 * px))
+    gameWindow.blit(upgrade_text_2, (4 * px, 160 * px))
+    gameWindow.blit(upgrade_text_3, (4 * px, 166 * px))
+    gameWindow.blit(upgrade_text_4, (4 * px, 172 * px))
 
 
 def fog(points):
@@ -412,16 +372,25 @@ def spawn_enemy():
             Spawning = True
 
     if enemyType < 100 - 10 * willpowerLevel:
-        monster = Enemy(gameWindow, spawn_x, spawn_y, 23 * px, 23 * px, 7, 1 * px, 2, abstinence1)
+        monster = Enemy(gameWindow, spawn_x, spawn_y, 23 * px, 23 * px, 7, 1 * px, 1 + willpowerLevel, abstinence1)
     else:
-        monster = Enemy(gameWindow, spawn_x, spawn_y, 52 * px, 26 * px, 15, 2 * px, 3, abstinence2)
+        monster = Enemy(gameWindow, spawn_x, spawn_y, 52 * px, 26 * px, 15, 2 * px, 3 * (1 + willpowerLevel), abstinence2)
     enemies.append(monster)
 
 
 def despawn_enemy(monster):
     if monster.xPos < - screenWidth or monster.xPos > 2 * screenWidth or monster.yPos < - screenHeight or monster.yPos > screenHeight * 2:
-        enemies.remove(monster)
+        try:
+            enemies.remove(monster)
+        except ValueError:
+            pass
 
+def despawn_projectile(attack):
+    if attack.xPos < - screenWidth or attack.xPos > 2 * screenWidth or attack.yPos < - screenHeight or attack.yPos > screenHeight * 2:
+        try:
+            projectiles.remove(attack)
+        except ValueError:
+            pass
 
 def enemy_attack(monster, player):
     global temptationPoints, Regenerating, temptationTime
@@ -437,6 +406,13 @@ def enemy_attack(monster, player):
 
     # if abs(first.xPos - second.xPos) <= 5 and abs(first.yPos - second.yPos) <= 5:
 
+def player_attack(attack, monster):
+    if attack.hitbox.colliderect(monster.hitbox):
+        monster.health -= 1
+        attack.pierce -= 1
+        pygame.mixer.Sound.play(enemyHitSound)
+
+
 
 TitleScreen = True
 Running = True
@@ -445,7 +421,7 @@ Setback = False
 
 for count in range(33):
     timer.tick(15)
-    gameWindow.blit(intro[count], (0, 0))
+    gameWindow.blit(introImages[count], (0, 0))
     # Update game window
     pygame.display.flip()
 
@@ -537,13 +513,13 @@ while TitleScreen:
 while Running:
     timer.tick(fps)
 
-    movementSpeed = (2 + willpowerLevel) * px
+    movementSpeed = (2 + willpowerLevel / 2) * px
     w_moved = 0
     a_moved = 0
     s_moved = 0
     d_moved = 0
 
-    projectileSpeed = 6 * px
+    projectileSpeed = 6 * px + willpowerLevel
 
     # make projectilespeed inside clasSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
     mousePosition = pygame.mouse.get_pos()
@@ -574,8 +550,15 @@ while Running:
             except ZeroDivisionError:
                 angle = 1.57079633
 
-            shot = Projectile(gameWindow, centerX, centerY, 69, 69, 420, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle)
+            shot = Projectile(gameWindow, centerX, centerY, 69, 69, 420, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle, primaryProjectile)
             projectiles.append(shot)
+
+            if willpowerLevel > 0:
+                for count in range(1, willpowerLevel - 1):
+                    RightOffshoot = Projectile(gameWindow, centerX, centerY, 69, 69, 420, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle + 0.1 * count, secondaryProjectile)
+                    projectiles.append(RightOffshoot)
+                    LeftOffshoot = Projectile(gameWindow, centerX, centerY, 69, 69, 420, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle - 0.1 * count, secondaryProjectile)
+                    projectiles.append(LeftOffshoot)
 
             pygame.mixer.Sound.play(shootSound)
 
@@ -603,6 +586,9 @@ while Running:
     for attack in projectiles:
         for monster in enemies:
 
+            player_attack(attack, monster)
+
+            '''
             if monster.xPos <= attack.xPos <= monster.xPos + monster.width and monster.yPos <= attack.yPos <= monster.yPos + monster.height:
 
                 try:
@@ -612,15 +598,16 @@ while Running:
 
                 except ValueError:
                     pass
-
+            '''
         if attack.pierce == 0:
             projectiles.remove(attack)
         attack.move(w_moved, a_moved, s_moved, d_moved)
         attack.travel(centerX)
+        despawn_projectile(attack)
         attack.draw()
 
     for monster in enemies:
-        if monster.health == 0:
+        if monster.health <= 0:
             enemies.remove(monster)
             willpowerPoints += 1
             pygame.mixer.Sound.play(killSound)
@@ -628,7 +615,7 @@ while Running:
         monster.move(w_moved, a_moved, s_moved, d_moved)
         monster.travel(centerX, centerY)
         despawn_enemy(monster)
-        monster.draw(centerX, centerY)
+        monster.draw(centerX, px)
 
     for structure in graveyardHitBoxes:
         structure.move(w_moved, a_moved, s_moved, d_moved)
@@ -644,10 +631,13 @@ while Running:
     willpower_bar(willpowerPoints, willpowerLevel, level_progression)
     if willpowerPoints >= level_progression:
         willpowerLevel += 1
+        upgradePoints += 1
         willpowerPoints = 0
         pygame.mixer.Sound.play(levelUpSound)
 
     temptation_graphics(temptationPoints)
+
+    HUD_graphics(upgradePoints)
 
     if temptationPoints >= 100:
 
