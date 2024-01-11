@@ -1,14 +1,17 @@
 
 # Import libraries
-from GameObjects import Structure
-from GameObjects import StructureHitBox
-from GameObjects import Player
-from GameObjects import Enemy
-from GameObjects import Projectile
-from random import randrange
 import math
+from random import randrange
+
 import pygame
 from pygame import mixer
+
+from GameObjects import Enemy
+from GameObjects import Player
+from GameObjects import Projectile
+from GameObjects import Structure
+from GameObjects import StructureHitBox
+
 pygame.init()
 mixer.init()
 
@@ -137,7 +140,9 @@ fogBottomRight = [fog1BottomRight, fog2BottomRight, fog3BottomRight]
 
 park = pygame.image.load('Graphics/image.png')
 park = pygame.transform.scale(park, (250 * px, 200 * px))
-parkRect = park.get_rect()
+park2 = pygame.image.load('Graphics/Park_2.png')
+park2 = pygame.transform.scale(park2, (250 * px, 200 * px))
+park2 = pygame.transform.flip(park2, True, False)
 
 introImages = []
 imageCount = 33
@@ -176,7 +181,11 @@ secondaryProjectile = pygame.transform.scale(secondaryProjectile, (3 * px, 3 * p
 #######################################################################################
 
 
-parkStructure = Structure(gameWindow, 250 * px, 70 * px, 69, 69, park)
+parkStructure = Structure(gameWindow, 10 * px, 135 * px, 69, 69, park)
+parkStructure2 = Structure(gameWindow, -238 * px, 142 * px, 69, 69, park2)
+parkStructure2_2 = Structure(gameWindow, 258 * px, 135 * px, 69, 69, park2)
+
+structures = [parkStructure, parkStructure2, parkStructure2_2]
 
 graveyardStructureTing = Structure(gameWindow, 80 * px, 40 * px, 69, 69, graveyard)
 
@@ -186,10 +195,19 @@ graveyardHitBox3 = StructureHitBox(gameWindow, 87 * px, 72 * px, 35 * px, 3 * px
 graveyardHitBox4 = StructureHitBox(gameWindow, 137 * px, 72 * px, 35 * px, 3 * px, 'red', px)
 graveyardHitBox5 = StructureHitBox(gameWindow, 87 * px, 134 * px, 35 * px, 3 * px, 'red', px)
 graveyardHitBox6 = StructureHitBox(gameWindow, 137 * px, 134 * px, 35 * px, 3 * px, 'red', px)
-graveyardHitBox7 = StructureHitBox(gameWindow, 0 * px, 0 * px, 320 * px, 180 * px, 'red', px)
+graveyardHitBox7 = StructureHitBox(gameWindow, -206 * px, 167 * px, 26 * px, 3 * px, 'red', px)
+graveyardHitBox8 = StructureHitBox(gameWindow, -128 * px, 165 * px, 26 * px, 3 * px, 'red', px)
+graveyardHitBox9 = StructureHitBox(gameWindow, -40 * px, 165 * px, 26 * px, 3 * px, 'red', px)
+graveyardHitBox10 = StructureHitBox(gameWindow, 290 * px, 160 * px, 26 * px, 3 * px, 'red', px)
+graveyardHitBox11 = StructureHitBox(gameWindow, 368 * px, 158 * px, 26 * px, 3 * px, 'red', px)
+graveyardHitBox12 = StructureHitBox(gameWindow, 430 * px, 160 * px, 26 * px, 3 * px, 'red', px)
+graveyardHitBox13 = StructureHitBox(gameWindow, 1000 * px, 160 * px, 26 * px, 3 * px, 'red', px)
 
 
-graveyardHitBoxes = [graveyardHitBox1, graveyardHitBox2, graveyardHitBox3, graveyardHitBox4, graveyardHitBox5, graveyardHitBox6, graveyardHitBox7]
+
+
+
+graveyardHitBoxes = [graveyardHitBox1, graveyardHitBox2, graveyardHitBox3, graveyardHitBox4, graveyardHitBox5, graveyardHitBox6, graveyardHitBox7, graveyardHitBox8, graveyardHitBox9, graveyardHitBox10, graveyardHitBox11, graveyardHitBox12, graveyardHitBox13]
 
 ###############################################################################################################
 ###   ###   ###         ###      ######         ###         ###      ######   #########         ###         ###
@@ -408,7 +426,7 @@ def enemy_attack(monster, player):
 
 def player_attack(attack, monster):
     if attack.hitbox.colliderect(monster.hitbox):
-        monster.health -= 1
+        monster.health -= attack.damage
         attack.pierce -= 1
         pygame.mixer.Sound.play(enemyHitSound)
 
@@ -526,7 +544,7 @@ while Running:
     leftClick = pygame.mouse.get_pressed()[0]
     rightClick = pygame.mouse.get_pressed()[2]
 
-    gameWindow.fill('grey')
+    gameWindow.fill('white')
 
     # Check for pygame events
     for event in pygame.event.get():
@@ -550,14 +568,14 @@ while Running:
             except ZeroDivisionError:
                 angle = 1.57079633
 
-            shot = Projectile(gameWindow, centerX, centerY, 69, 69, 420, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle, primaryProjectile)
+            shot = Projectile(gameWindow, centerX, centerY, 69, 69, 3, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle, primaryProjectile)
             projectiles.append(shot)
 
             if willpowerLevel > 0:
                 for count in range(1, willpowerLevel - 1):
-                    RightOffshoot = Projectile(gameWindow, centerX, centerY, 69, 69, 420, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle + 0.1 * count, secondaryProjectile)
+                    RightOffshoot = Projectile(gameWindow, centerX, centerY, 69, 69, 1, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle + 0.1 * count, secondaryProjectile)
                     projectiles.append(RightOffshoot)
-                    LeftOffshoot = Projectile(gameWindow, centerX, centerY, 69, 69, 420, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle - 0.1 * count, secondaryProjectile)
+                    LeftOffshoot = Projectile(gameWindow, centerX, centerY, 69, 69, 1, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle - 0.1 * count, secondaryProjectile)
                     projectiles.append(LeftOffshoot)
 
             pygame.mixer.Sound.play(shootSound)
@@ -578,8 +596,10 @@ while Running:
     graveyardStructureTing.move(w_moved, a_moved, s_moved, d_moved)
     graveyardStructureTing.draw()
 
-    parkStructure.move(w_moved, a_moved, s_moved, d_moved)
-    parkStructure.draw()
+    for image in structures:
+        image.move(w_moved, a_moved, s_moved, d_moved)
+        image.draw()
+
 
     player.draw(px)
 
