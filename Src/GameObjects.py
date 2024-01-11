@@ -41,9 +41,14 @@ class StructureHitBox(GameObject):
         self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
 
 
-    def draw(self):
+    def update(self):
         # Updating hitbox position
         self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
+        # pygame.draw.rect(self.gameWindow, self.color, self.hitbox, self.thickness)
+
+    def draw(self):
+        # Updating hitbox position
+        # self.hitbox = pygame.Rect(self.xPos, self.yPos, self.width, self.height)
         pygame.draw.rect(self.gameWindow, self.color, self.hitbox, self.thickness)
 
 
@@ -58,7 +63,7 @@ class Player():
 
     def draw(self, px):
         self.gameWindow.blit(self.image, (145 * px, 76 * px))
-        pygame.draw.rect(self.gameWindow, 'blue', self.hitbox, 1)
+        # pygame.draw.rect(self.gameWindow, 'blue', self.hitbox, 1)
 
         # blit.shoes
         # blit.shirt
@@ -100,7 +105,7 @@ class Enemy(GameObject):
             self.gameWindow.blit(self.image[0], self.hitbox)
         else:
             self.gameWindow.blit(self.image[1], self.hitbox)
-        pygame.draw.rect(self.gameWindow, 'red', self.hitbox, 2)
+        # pygame.draw.rect(self.gameWindow, 'red', self.hitbox, 2)
 
         pygame.draw.rect(self.gameWindow, 'red', pygame.Rect(self.xPos, self.yPos - 4 * px, self.width / self.initialHealth * self.health, 2 * px))
 

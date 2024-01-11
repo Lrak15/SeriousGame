@@ -78,8 +78,12 @@ playerHitSound.set_volume(0.1)
 levelUpSound = pygame.mixer.Sound('Sfx/levelup.mp3')
 levelUpSound.set_volume(0.1)
 
+music = 'Sfx/Amynedd Main Theme SMT-2 0.8S.mp3'
+pygame.mixer.music.load(music)
+
 # mixer.music.load("")
-mixer.music.set_volume(0.7)
+mixer.music.set_volume(0.2)
+
 
 
 ################################################################################################################################
@@ -144,6 +148,10 @@ park2 = pygame.image.load('Graphics/Park_2.png')
 park2 = pygame.transform.scale(park2, (250 * px, 200 * px))
 park2 = pygame.transform.flip(park2, True, False)
 
+building = pygame.image.load('Graphics/city structures-1.png.png')
+building = pygame.transform.scale(building, (102 * px, 60 * px))
+
+
 introImages = []
 imageCount = 33
 for i in range(1, imageCount + 1):
@@ -185,7 +193,9 @@ parkStructure = Structure(gameWindow, 10 * px, 135 * px, 69, 69, park)
 parkStructure2 = Structure(gameWindow, -238 * px, 142 * px, 69, 69, park2)
 parkStructure2_2 = Structure(gameWindow, 258 * px, 135 * px, 69, 69, park2)
 
-structures = [parkStructure, parkStructure2, parkStructure2_2]
+buildingStructure = Structure(gameWindow, -170 * px, 50 * px, 69, 69, building)
+
+structures = [parkStructure, parkStructure2, parkStructure2_2, buildingStructure]
 
 graveyardStructureTing = Structure(gameWindow, 80 * px, 40 * px, 69, 69, graveyard)
 
@@ -195,19 +205,20 @@ graveyardHitBox3 = StructureHitBox(gameWindow, 87 * px, 72 * px, 35 * px, 3 * px
 graveyardHitBox4 = StructureHitBox(gameWindow, 137 * px, 72 * px, 35 * px, 3 * px, 'red', px)
 graveyardHitBox5 = StructureHitBox(gameWindow, 87 * px, 134 * px, 35 * px, 3 * px, 'red', px)
 graveyardHitBox6 = StructureHitBox(gameWindow, 137 * px, 134 * px, 35 * px, 3 * px, 'red', px)
-graveyardHitBox7 = StructureHitBox(gameWindow, -206 * px, 167 * px, 26 * px, 3 * px, 'red', px)
-graveyardHitBox8 = StructureHitBox(gameWindow, -128 * px, 165 * px, 26 * px, 3 * px, 'red', px)
-graveyardHitBox9 = StructureHitBox(gameWindow, -40 * px, 165 * px, 26 * px, 3 * px, 'red', px)
-graveyardHitBox10 = StructureHitBox(gameWindow, 290 * px, 160 * px, 26 * px, 3 * px, 'red', px)
-graveyardHitBox11 = StructureHitBox(gameWindow, 368 * px, 158 * px, 26 * px, 3 * px, 'red', px)
-graveyardHitBox12 = StructureHitBox(gameWindow, 430 * px, 160 * px, 26 * px, 3 * px, 'red', px)
-graveyardHitBox13 = StructureHitBox(gameWindow, 1000 * px, 160 * px, 26 * px, 3 * px, 'red', px)
+benchHitbox1 = StructureHitBox(gameWindow, -206 * px, 167 * px, 26 * px, 3 * px, 'blue', px)
+benchHitbox2 = StructureHitBox(gameWindow, -128 * px, 165 * px, 26 * px, 3 * px, 'blue', px)
+benchHitbox3 = StructureHitBox(gameWindow, -40 * px, 165 * px, 26 * px, 3 * px, 'blue', px)
+benchHitbox4 = StructureHitBox(gameWindow, 290 * px, 160 * px, 26 * px, 3 * px, 'blue', px)
+benchHitbox5 = StructureHitBox(gameWindow, 368 * px, 158 * px, 26 * px, 3 * px, 'blue', px)
+benchHitbox6 = StructureHitBox(gameWindow, 456 * px, 158 * px, 26 * px, 3 * px, 'blue', px)
+buildingHitbox1 = StructureHitBox(gameWindow, -169 * px, 50 * px, 100 * px, 51 * px, 'blue', px)
+borderHitbox1 = StructureHitBox(gameWindow, -437 * px, -200 * px, 1100 * px, 200 * px, 'black', 100 * px)
+borderHitbox2 = StructureHitBox(gameWindow, -437 * px, -200 * px, 200 * px, 500 * px, 'black', 100 * px)
+borderHitbox3 = StructureHitBox(gameWindow, 507 * px, -200 * px, 200 * px, 1000 * px, 'black', 100 * px)
+borderHitbox4 = StructureHitBox(gameWindow, -437 * px, 335 * px, 1000 * px, 200 * px, 'black', 100 * px)
 
-
-
-
-
-graveyardHitBoxes = [graveyardHitBox1, graveyardHitBox2, graveyardHitBox3, graveyardHitBox4, graveyardHitBox5, graveyardHitBox6, graveyardHitBox7, graveyardHitBox8, graveyardHitBox9, graveyardHitBox10, graveyardHitBox11, graveyardHitBox12, graveyardHitBox13]
+structureHitboxes = [graveyardHitBox1, graveyardHitBox2, graveyardHitBox3, graveyardHitBox4, graveyardHitBox5, graveyardHitBox6, benchHitbox1, benchHitbox2, benchHitbox3, benchHitbox4, benchHitbox5, benchHitbox6, buildingHitbox1, borderHitbox1, borderHitbox2, borderHitbox3, borderHitbox4]
+borderHitboxes = [borderHitbox1, borderHitbox2, borderHitbox3, borderHitbox4]
 
 ###############################################################################################################
 ###   ###   ###         ###      ######         ###         ###      ######   #########         ###         ###
@@ -230,13 +241,17 @@ spawnDelay = 0
 attackDelay = 0
 graphicsDelay = 0
 
-
 willpowerPoints = 0
 willpowerLevel = 0
 
 temptationPoints = 0
 
 upgradePoints = 5
+
+attackSpeedUpgrades = 0
+movementSpeedUpgrades = 0
+resistanceUpgrades = 0
+projectileUpgrades = 0
 
 projectiles = []
 enemies = []
@@ -248,7 +263,6 @@ setbackTime = None
 Regenerating = False
 
 temptationTime = None
-
 
 
 ###############################################################################################################
@@ -415,7 +429,7 @@ def enemy_attack(monster, player):
     if monster.hitbox.colliderect(player.hitbox):
         try:
             enemies.remove(monster)
-            temptationPoints += monster.damage
+            temptationPoints += monster.damage * (1 - resistanceUpgrades / 15)
             Regenerating = False
             temptationTime = pygame.time.get_ticks()
             pygame.mixer.Sound.play(playerHitSound)
@@ -526,12 +540,15 @@ while TitleScreen:
     # Update game window
     pygame.display.flip()
 
-
+# Playing music that repeats 69 times
+# Inspiration from:
+# https://stackoverflow.com/questions/35068209/how-do-i-repeat-music-using-pygame-mixer
+pygame.mixer.music.play(69)
 
 while Running:
     timer.tick(fps)
 
-    movementSpeed = (2 + willpowerLevel / 2) * px
+    movementSpeed = (1 + movementSpeedUpgrades) * px
     w_moved = 0
     a_moved = 0
     s_moved = 0
@@ -544,17 +561,37 @@ while Running:
     leftClick = pygame.mouse.get_pressed()[0]
     rightClick = pygame.mouse.get_pressed()[2]
 
-    gameWindow.fill('white')
+    gameWindow.fill('darkgrey')
 
     # Check for pygame events
     for event in pygame.event.get():
 
         # Check for keys pressed
         if event.type == pygame.KEYDOWN:
-
             # Close game if escape key is pressed
             if event.key == pygame.K_ESCAPE:
                 Running = False
+
+        # Check for keys let go of
+        # Inspiration from:
+        # https: // stackoverflow.com / questions / 58600062 / how - to - use - keyup - in -pygame
+        elif event.type == pygame.KEYUP:
+            # Upgrade attack speed if key 1 is let go of
+            if event.key == pygame.K_1 and upgradePoints >= 2:
+                attackSpeedUpgrades += 1
+                upgradePoints -= 2
+            # Upgrade movement speed if key 2 is let go of
+            elif event.key == pygame.K_2 and upgradePoints >= 2:
+                movementSpeedUpgrades += 1
+                upgradePoints -= 2
+            # Upgrade resistance if key 3 is let go of
+            elif event.key == pygame.K_3 and upgradePoints >= 1:
+                resistanceUpgrades += 1
+                upgradePoints -= 1
+            # Upgrade projectile count if key 4 is let go of
+            elif event.key == pygame.K_4 and upgradePoints >= 4:
+                projectileUpgrades += 1
+                upgradePoints -= 4
 
         # Close game if the game windows close button is pressed
         elif event.type == pygame.QUIT:
@@ -562,7 +599,7 @@ while Running:
 
     if leftClick:
         if attackDelay <= 0:
-            attackDelay = 10 - willpowerLevel
+            attackDelay = 10 - attackSpeedUpgrades
             try:
                 angle = (math.atan((mousePosition[1] - centerY) / (mousePosition[0] - centerX)))
             except ZeroDivisionError:
@@ -571,8 +608,9 @@ while Running:
             shot = Projectile(gameWindow, centerX, centerY, 69, 69, 3, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle, primaryProjectile)
             projectiles.append(shot)
 
-            if willpowerLevel > 0:
-                for count in range(1, willpowerLevel - 1):
+            if projectileUpgrades > 0:
+                for count in range(1, projectileUpgrades + 1):
+                    print(count)
                     RightOffshoot = Projectile(gameWindow, centerX, centerY, 69, 69, 1, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle + 0.1 * count, secondaryProjectile)
                     projectiles.append(RightOffshoot)
                     LeftOffshoot = Projectile(gameWindow, centerX, centerY, 69, 69, 1, projectileSpeed, mousePosition[0], (screenHeight - mousePosition[1]), angle - 0.1 * count, secondaryProjectile)
@@ -590,7 +628,7 @@ while Running:
 
     calculate_movement(movementSpeed)
 
-    for structure in graveyardHitBoxes:
+    for structure in structureHitboxes:
         check_collisions(structure, player)
 
     graveyardStructureTing.move(w_moved, a_moved, s_moved, d_moved)
@@ -600,6 +638,12 @@ while Running:
         image.move(w_moved, a_moved, s_moved, d_moved)
         image.draw()
 
+    for structure in structureHitboxes:
+        structure.move(w_moved, a_moved, s_moved, d_moved)
+        structure.update()
+
+    for border in borderHitboxes:
+        border.draw()
 
     player.draw(px)
 
@@ -637,13 +681,9 @@ while Running:
         despawn_enemy(monster)
         monster.draw(centerX, px)
 
-    for structure in graveyardHitBoxes:
-        structure.move(w_moved, a_moved, s_moved, d_moved)
-        structure.draw()
-
     # fog(temptationPoints)
 
-    display_mouse_coordinates()
+    # display_mouse_coordinates()
 
     gameWindow.blit(HUD, (0, 0))
 
