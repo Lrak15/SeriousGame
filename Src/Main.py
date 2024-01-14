@@ -577,21 +577,21 @@ while Running:
         # https: // stackoverflow.com / questions / 58600062 / how - to - use - keyup - in -pygame
         elif event.type == pygame.KEYUP:
             # Upgrade attack speed if key 1 is let go of
-            if event.key == pygame.K_1 and upgradePoints >= 2:
+            if event.key == pygame.K_1 and upgradePoints >= 1:
                 attackSpeedUpgrades += 1
-                upgradePoints -= 2
+                upgradePoints -= 1
             # Upgrade movement speed if key 2 is let go of
-            elif event.key == pygame.K_2 and upgradePoints >= 2:
+            elif event.key == pygame.K_2 and upgradePoints >= 1:
                 movementSpeedUpgrades += 1
-                upgradePoints -= 2
+                upgradePoints -= 1
             # Upgrade resistance if key 3 is let go of
             elif event.key == pygame.K_3 and upgradePoints >= 1:
                 resistanceUpgrades += 1
                 upgradePoints -= 1
             # Upgrade projectile count if key 4 is let go of
-            elif event.key == pygame.K_4 and upgradePoints >= 4:
+            elif event.key == pygame.K_4 and upgradePoints >= 2:
                 projectileUpgrades += 1
-                upgradePoints -= 4
+                upgradePoints -= 2
 
         # Close game if the game windows close button is pressed
         elif event.type == pygame.QUIT:
