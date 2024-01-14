@@ -16,7 +16,7 @@ pygame.init()
 mixer.init()
 
 # Set frames per second
-fps = 20
+fps = 60
 timer = pygame.time.Clock()
 
 # Set up game window
